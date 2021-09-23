@@ -139,10 +139,10 @@ call everforest#highlight('StatusLineNC', s:palette.grey1, s:palette.bg0)
 call everforest#highlight('StatusLineTermNC', s:palette.grey1, s:palette.bg0)
 call everforest#highlight('TabLine', s:palette.grey2, s:palette.bg3)
 call everforest#highlight('TabLineFill', s:palette.grey1, s:palette.bg1)
-call everforest#highlight('TabLineSel', s:palette.bg0, s:palette.statusline1)
+call everforest#highlight('TabLineSel', s:palette.grey1, s:palette.none)
 call everforest#highlight('VertSplit', s:palette.bg4, s:palette.none)
-call everforest#highlight('Visual', s:palette.none, s:palette.bg_visual)
-call everforest#highlight('VisualNOS', s:palette.none, s:palette.bg_visual)
+call everforest#highlight('Visual', s:palette.none, s:palette.bg3)
+call everforest#highlight('VisualNOS', s:palette.none, s:palette.bg3)
 call everforest#highlight('QuickFixLine', s:palette.purple, s:palette.none, 'bold')
 call everforest#highlight('Debug', s:palette.orange, s:palette.none)
 call everforest#highlight('debugPC', s:palette.bg0, s:palette.green)
@@ -237,7 +237,7 @@ call everforest#highlight('Special', s:palette.yellow, s:palette.none)
 call everforest#highlight('SpecialChar', s:palette.yellow, s:palette.none)
 call everforest#highlight('Type', s:palette.yellow, s:palette.none)
 call everforest#highlight('Function', s:palette.green, s:palette.none)
-call everforest#highlight('String', s:palette.green, s:palette.none)
+call everforest#highlight('String', s:palette.yellow, s:palette.none)
 call everforest#highlight('Character', s:palette.green, s:palette.none)
 call everforest#highlight('Constant', s:palette.aqua, s:palette.none)
 call everforest#highlight('Macro', s:palette.aqua, s:palette.none)
@@ -327,10 +327,10 @@ if s:configuration.diagnostic_virtual_text ==# 'grey'
   highlight! link VirtualTextInfo Grey
   highlight! link VirtualTextHint Grey
 else
-  highlight! link VirtualTextWarning Yellow
-  highlight! link VirtualTextError Red
-  highlight! link VirtualTextInfo Blue
-  highlight! link VirtualTextHint Green
+  call everforest#highlight('VirtualTextError', s:palette.red, s:palette.bg_red, 'undercurl', s:palette.red)
+  call everforest#highlight('VirtualTextWarning', s:palette.yellow, s:palette.bg_yellow, 'undercurl', s:palette.yellow)
+  call everforest#highlight('VirtualTextHint', s:palette.green, s:palette.bg_green, 'undercurl', s:palette.green)
+  call everforest#highlight('VirtualTextInfo', s:palette.blue, s:palette.bg_blue, 'undercurl', s:palette.blue)
 endif
 call everforest#highlight('ErrorFloat', s:palette.red, s:palette.bg2)
 call everforest#highlight('WarningFloat', s:palette.yellow, s:palette.bg2)
@@ -349,7 +349,7 @@ endif
 if (has('termguicolors') && &termguicolors) || has('gui_running')
   " Definition
   let s:terminal = {
-        \ 'black':    s:palette.bg3,
+        \ 'black':    s:palette.bg0,
         \ 'red':      s:palette.red,
         \ 'yellow':   s:palette.yellow,
         \ 'green':    s:palette.green,
@@ -425,9 +425,9 @@ highlight! link TSPunctBracket Fg
 highlight! link TSPunctDelimiter Grey
 highlight! link TSPunctSpecial Blue
 highlight! link TSRepeat Red
-highlight! link TSString Aqua
-highlight! link TSStringEscape Green
-highlight! link TSStringRegex Green
+highlight! link TSString Yellow
+highlight! link TSStringEscape Yellow
+highlight! link TSStringRegex Purple
 highlight! link TSStructure BlueItalic
 highlight! link TSSymbol Fg
 highlight! link TSTag Orange
@@ -789,7 +789,18 @@ highlight! link SneakScope DiffText
 call everforest#highlight('HopNextKey', s:palette.orange, s:palette.none, 'bold')
 call everforest#highlight('HopNextKey1', s:palette.green, s:palette.none, 'bold')
 highlight! link HopNextKey2 Green
-highlight! link HopUnmatched Grey
+highlight! link HopUnmatched Greyj
+" }}}
+" ggandor/lightspeed.nvim {{{
+call everforest#highlight('LightspeedLabel', s:palette.green, s:palette.none, 'bold,underline')
+call everforest#highlight('LightspeedLabelOverlapped', s:palette.green, s:palette.none, 'underline')
+call everforest#highlight('LightspeedLabelDistant', s:palette.blue, s:palette.none, 'underline')
+call everforest#highlight('LightspeedLabelDistantOverlapped', s:palette.blue, s:palette.none, 'underline')
+call everforest#highlight('LightspeedShortcut', s:palette.bg0, s:palette.blue, 'bold,underline')
+call everforest#highlight('LightspeedOneCharMatch', s:palette.bg0, s:palette.blue, 'bold')
+call everforest#highlight('LightspeedPendingOpArea', s:palette.bg0, s:palette.blue, 'strikethrough')
+call everforest#highlight('LightspeedPendingChangeOpArea', s:palette.green, s:palette.none, 'strikethrough')
+call everforest#highlight('LightspeedMaskedChar', s:palette.bg_blue, s:palette.none)
 " }}}
 " terryma/vim-multiple-cursors {{{
 highlight! link multiple_cursors_cursor Cursor
@@ -912,6 +923,16 @@ highlight! link agitDiffRemove Red
 highlight! link agitDiffAdd Green
 highlight! link agitDiffHeader Purple
 " }}}
+" barbar.nvim {{{
+highlight! link BufferOffset VertSplit
+call everforest#highlight('BufferCurrentMod', s:palette.fg, s:palette.none, 'bold')
+call everforest#highlight('BufferVisibleMod', s:palette.grey1, s:palette.none, 'bold')
+call everforest#highlight('BufferInactiveMod', s:palette.grey1, s:palette.bg1, 'bold')
+
+call everforest#highlight('BufferCurrentTarget', s:palette.red, s:palette.none, 'bold')
+call everforest#highlight('BufferVisibleTarget', s:palette.red, s:palette.none, 'bold')
+call everforest#highlight('BufferInactiveTarget', s:palette.red, s:palette.bg1, 'bold')
+" }}}
 " }}}
 " Extended File Types: {{{
 " Whitelist: {{{ File type optimizations that will always be loaded.
@@ -1014,11 +1035,11 @@ highlight! link DirvishArg Yellow
 " ft_begin: NvimTree {{{
 " https://github.com/kyazdani42/nvim-tree.lua
 highlight! link NvimTreeSymlink Fg
-highlight! link NvimTreeFolderName Green
+highlight! link NvimTreeFolderName Normal
 highlight! link NvimTreeRootFolder Grey
-highlight! link NvimTreeFolderIcon Orange
-highlight! link NvimTreeEmptyFolderName Green
-highlight! link NvimTreeOpenedFolderName Green
+highlight! link NvimTreeFolderIcon Green
+highlight! link NvimTreeEmptyFolderName Grey
+highlight! link NvimTreeOpenedFolderName Yellow
 highlight! link NvimTreeExecFile Fg
 highlight! link NvimTreeOpenedFile Fg
 highlight! link NvimTreeSpecialFile Fg
@@ -1088,7 +1109,7 @@ call everforest#highlight('markdownH3', s:palette.yellow, s:palette.none, 'bold'
 call everforest#highlight('markdownH4', s:palette.green, s:palette.none, 'bold')
 call everforest#highlight('markdownH5', s:palette.blue, s:palette.none, 'bold')
 call everforest#highlight('markdownH6', s:palette.purple, s:palette.none, 'bold')
-call everforest#highlight('markdownUrl', s:palette.blue, s:palette.none, 'underline')
+call everforest#highlight('markdownUrl', s:palette.blue, s:palette.none, 'underline', s:palette.blue)
 call everforest#highlight('markdownItalic', s:palette.none, s:palette.none, 'italic')
 call everforest#highlight('markdownBold', s:palette.none, s:palette.none, 'bold')
 call everforest#highlight('markdownItalicDelimiter', s:palette.grey1, s:palette.none, 'italic')
@@ -2239,7 +2260,7 @@ highlight! link dosiniNumber Green
 call everforest#highlight('helpNote', s:palette.purple, s:palette.none, 'bold')
 call everforest#highlight('helpHeadline', s:palette.red, s:palette.none, 'bold')
 call everforest#highlight('helpHeader', s:palette.orange, s:palette.none, 'bold')
-call everforest#highlight('helpURL', s:palette.green, s:palette.none, 'underline')
+call everforest#highlight('helpURL', s:palette.green, s:palette.none, 'underline', s:palette.green)
 call everforest#highlight('helpHyperTextEntry', s:palette.yellow, s:palette.none, 'bold')
 highlight! link helpHyperTextJump Yellow
 highlight! link helpCommand Aqua
