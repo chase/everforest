@@ -934,6 +934,9 @@ call everforest#highlight('BufferCurrentTarget', s:palette.red, s:palette.none, 
 call everforest#highlight('BufferVisibleTarget', s:palette.red, s:palette.none, 'bold')
 call everforest#highlight('BufferInactiveTarget', s:palette.red, s:palette.bg1, 'bold')
 " }}}
+" simrat93/symbols-outline.nvim {{{
+call everforest#highlight('FocusedSymbol', s:palette.none, s:palette.bg_green, 'bold')
+" }}}
 " }}}
 " Extended File Types: {{{
 " Whitelist: {{{ File type optimizations that will always be loaded.
