@@ -10,7 +10,7 @@
 let s:configuration = everforest#get_configuration()
 let s:palette = everforest#get_palette(s:configuration.background)
 let s:path = expand('<sfile>:p') " the path of this script
-let s:last_modified = 'Fri Aug  6 11:24:44 AM UTC 2021'
+let s:last_modified = 'Fri Nov  8 12:53:44 AM UTC 2021'
 let g:everforest_loaded_file_types = []
 
 if !(exists('g:colors_name') && g:colors_name ==# 'everforest' && s:configuration.better_performance)
@@ -600,6 +600,14 @@ highlight! link LspInformationHighlight InfoText
 highlight! link LspHintHighlight HintText
 highlight! link lspReference CurrentWord
 " }}}
+" hrsh7th/nvim-cmp {{{
+call everforest#highlight('CmpItemAbbrMatch', s:palette.green, s:palette.none, 'bold')
+call everforest#highlight('CmpItemAbbrMatchFuzzy', s:palette.green, s:palette.none, 'bold')
+highlight! link CmpItemAbbr Fg
+highlight! link CmpItemAbbrDeprecated Fg
+highlight! link CmpItemMenu Fg
+highlight! link CmpItemKind Yellow
+" }}}
 " ycm-core/YouCompleteMe {{{
 highlight! link YcmErrorSign RedSign
 highlight! link YcmWarningSign YellowSign
@@ -923,6 +931,23 @@ highlight! link agitStatMessage Orange
 highlight! link agitDiffRemove Red
 highlight! link agitDiffAdd Green
 highlight! link agitDiffHeader Purple
+" }}}
+" rcarriga/nvim-notify {{{
+highlight! link NotifyERRORBorder Red
+highlight! link NotifyWARNBorder Yellow
+highlight! link NotifyINFOBorder Green
+highlight! link NotifyDEBUGBorder Grey
+highlight! link NotifyTRACEBorder Purple
+highlight! link NotifyERRORIcon Red
+highlight! link NotifyWARNIcon Yellow
+highlight! link NotifyINFOIcon Green
+highlight! link NotifyDEBUGIcon Grey
+highlight! link NotifyTRACEIcon Purple
+highlight! link NotifyERRORTitle Red
+highlight! link NotifyWARNTitle Yellow
+highlight! link NotifyINFOTitle Green
+highlight! link NotifyDEBUGTitle Grey
+highlight! link NotifyTRACETitle Purple
 " }}}
 " barbar.nvim {{{
 highlight! link BufferOffset VertSplit
