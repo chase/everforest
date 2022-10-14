@@ -1,5 +1,14 @@
-*everforest.txt*
+*everforest.txt*   Comfortable & Pleasant Color Scheme for Vim
+*everforest*
+>
+            ______                ____                     __
+           / ____/   _____  _____/ __/___  ________  _____/ /_
+          / __/ | | / / _ \/ ___/ /_/ __ \/ ___/ _ \/ ___/ __/
+         / /___ | |/ /  __/ /  / __/ /_/ / /  /  __(__  ) /_
+        /_____/ |___/\___/_/  /_/  \____/_/   \___/____/\__/
+<
 
+==============================================================================
 CONTENTS                                     *everforest-contents*
 
 Introduction                                 |everforest-introduction|
@@ -8,7 +17,7 @@ Usage                                        |everforest-usage|
 Configuration                                |everforest-configuration|
 FAQ                                          |everforest-faq|
 
-Note: Type |gO| to show the outline of contents.
+Note: Type |gO| in neovim to show the outline of contents.
 
 ==============================================================================
 INTRODUCTION                                           *everforest-introduction*
@@ -23,8 +32,8 @@ Features~
 - Works well with [redshift](https://github.com/jonls/redshift) and [f.lux](https://justgetflux.com).
 - Customizable.
 - Rich support for common file types and plugins.
-- Semantic highlighting support.
 - Tree-sitter support.
+- Semantic highlighting support.
 - Italic support 🎉
 
 ==============================================================================
@@ -62,7 +71,7 @@ Manually~
     1. Clone the repository: `git clone --depth 1 https://github.com/sainnhe/everforest.git`
 
     2. Copy `/path/to/everforest/autoload/everforest.vim` to
-    `~/.vim/autoload/`.
+    `~/.vim/autoload/` .
 
     3. Copy `/path/to/everforest/colors/everforest.vim` to
     `~/.vim/colors/` .
@@ -77,6 +86,10 @@ Manually~
     6. To install [lightline](https://github.com/itchyny/lightline.vim) theme,
     copy `/path/to/everforest/autoload/lightline/colorscheme/everforest.vim`
     to `~/.vim/autoload/lightline/colorscheme/` .
+
+    7. To install [lualine](https://github.com/nvim-lualine/lualine.nvim) theme,
+    copy `/path/to/everforest/lua/lualine/themes/everforest.lua`
+    to `~/.config/nvim/lua/lualine/themes/` .
 
 ------------------------------------------------------------------------------
 
@@ -111,6 +124,9 @@ Vim~
         " This configuration option should be placed before `colorscheme everforest`.
         " Available values: 'hard', 'medium'(default), 'soft'
         let g:everforest_background = 'soft'
+
+        " For better performance
+        let g:everforest_better_performance = 1
 
         colorscheme everforest
 <
@@ -153,6 +169,23 @@ Lightline~
         :call lightline#init()
         :call lightline#colorscheme()
 <
+------------------------------------------------------------------------------
+
+Lualine~
+
+    To enable [lualine](https://github.com/nvim-lualine/lualine.nvim) color
+    scheme, put this in your init.lua:
+>
+        require'lualine'.setup {
+          options = {
+            theme = 'everforest'
+          }
+        }
+<
+    To apply it without reloading:
+>
+        :lua require'lualine'.setup {options = {theme = 'everforest'}}
+<
 ==============================================================================
 CONFIGURATION                                         *everforest-configuration*
 
@@ -166,8 +199,7 @@ E.g.
     set background=light
 
     let g:everforest_background = 'soft'
-    let g:everforest_enable_italic = 1
-    let g:everforest_disable_italic_comment = 1
+    let g:everforest_better_performance = 1
 
     colorscheme everforest
     let g:lightline.colorscheme = 'everforest'
@@ -178,23 +210,20 @@ g:everforest_background~
 
 The background contrast used in this color scheme.
 
-    Available values: `'hard'`, `'medium'`, `'soft'`
-    Default value: `'medium'`
+    Type:               |String|
+    Available values:   `'hard'`, `'medium'`, `'soft'`
+    Default value:      `'medium'`
 
-E.g.
->
-    let g:everforest_background = 'soft'
-<
 ------------------------------------------------------------------------------
                                                     *g:everforest_enable_italic*
 g:everforest_enable_italic~
 
 To enable italic in this color scheme, set this option to `1`.
 
-E.g.
->
-    let g:everforest_enable_italic = 1
-<
+    Type:               |Number|
+    Available values:   `0`, `1`
+    Default value:      `0`
+
 Note: This option is designed to use with fonts that support cursive italics.
 See |everforest-faq| for more information.
 
@@ -205,74 +234,77 @@ g:everforest_disable_italic_comment~
 By default, italic is enabled in `Comment`. To disable italic in `Comment`, set
 this option to `1`.
 
-E.g.
->
-    let g:everforest_disable_italic_comment = 1
-<
+    Type:               |Number|
+    Available values:   `0`, `1`
+    Default value:      `0`
+
 ------------------------------------------------------------------------------
                                                            *g:everforest_cursor*
 g:everforest_cursor~
 
 Customize the cursor color, only works in GUI clients.
 
-    Available values: `'auto'`, `'red'`, `'orange'`, `'yellow'`, `'green'`,
+    Type:               |String|
+    Available values:   `'auto'`, `'red'`, `'orange'`, `'yellow'`, `'green'`,
     `'aqua'`, `'blue'`, `'purple'`
-    Default value: `'auto'`
+    Default value:      `'auto'`
 
-E.g.
->
-    let g:everforest_cursor = 'green'
-<
 ------------------------------------------------------------------------------
                                            *g:everforest_transparent_background*
 g:everforest_transparent_background~
 
 To use transparent background, set this option to `1`.
 
-E.g.
->
-    let g:everforest_transparent_background = 1
-<
+If you want more ui components to be transparent (for example, status line
+background), set this option to `2`.
+
+    Type:               |Number|
+    Available values:   `0`, `1`, `2`
+    Default value:      `0`
+
 ------------------------------------------------------------------------------
                                            *g:everforest_sign_column_background*
 g:everforest_sign_column_background~
 
-By default, the background color of sign column is different from normal text.
-If you want to make it the same as normal text, set this option to `'none'`.
+By default, the color of sign column background is the same as normal text
+background, but you can use a grey background by setting this option to `'grey'`.
 
-    Available values: `'default'`, `'none'`
-    Default value: `'default'`
+    Type:               |String|
+    Available values:   `'none'`, `'grey'`
+    Default value:      `'none'`
 
-E.g.
->
-    let g:everforest_sign_column_background = 'none'
-<
+------------------------------------------------------------------------------
+                                                 *g:everforest_spell_foreground*
+g:everforest_spell_foreground~
+
+By default, this color scheme won't color the foreground of |spell|, instead
+colored under curls will be used. If you also want to color the foreground,
+set this option to `'colored'`.
+
+    Type:               |String|
+    Available values:   `'none'`, `'colored'`
+    Default value:      `'none'`
+
 ------------------------------------------------------------------------------
                                                       *g:everforest_ui_contrast*
 g:everforest_ui_contrast~
 
 The contrast of line numbers, indent lines, etc.
 
-    Available values: `'low'`, `'high'`
-    Default value: `'low'`
+    Type:               |String|
+    Available values:   `'low'`, `'high'`
+    Default value:      `'low'`
 
-E.g.
->
-    let g:everforest_ui_contrast = 'high'
-<
 ------------------------------------------------------------------------------
                                                          *g:everforest_show_eob*
 g:everforest_show_eob~
 
 Whether to show |hl-EndOfBuffer|.
 
-    Available values: `1`, `0`
-    Default value: `1`
+    Type:               |Number|
+    Available values:   `1`, `0`
+    Default value:      `1`
 
-E.g.
->
-    let g:everforest_show_eob = 0
-<
 ------------------------------------------------------------------------------
                                         *g:everforest_diagnostic_text_highlight*
 g:everforest_diagnostic_text_highlight~
@@ -281,13 +313,10 @@ Some plugins support highlighting error/warning/info/hint texts, by default
 these texts are only underlined, but you can use this option to also highlight
 the background of them.
 
-    Available values: `0`, `1`
-    Default value: `0`
+    Type:               |Number|
+    Available values:   `0`, `1`
+    Default value:      `0`
 
-E.g.
->
-    let g:everforest_diagnostic_text_highlight = 1
-<
 Currently, the following plugins are supported:
 
 - neovim's built-in language server client
@@ -306,10 +335,10 @@ Some plugins support highlighting error/warning/info/hint lines, but this
 feature is disabled by default in this color scheme. To enable this feature,
 set this option to `1`.
 
-E.g.
->
-    let g:everforest_diagnostic_line_highlight = 1
-<
+    Type:               |Number|
+    Available values:   `0`, `1`
+    Default value:      `0`
+
 Currently, the following plugins are supported:
 
 - https://github.com/neoclide/coc.nvim
@@ -325,13 +354,10 @@ Some plugins can use virtual text feature of neovim to display
 error/warning/info/hint information, you can use this option to adjust the
 colors of it.
 
-    Available values: `'grey'`, `'colored'`
-    Default value: `'grey'`
+    Type:               |String|
+    Available values:   `'grey'`, `'colored'`
+    Default value:      `'grey'`
 
-E.g.
->
-    let g:everforest_diagnostic_virtual_text = 'colored'
-<
 Currently, the following plugins are supported:
 
 - neovim's built-in language server client
@@ -347,14 +373,11 @@ g:everforest_current_word~
 Some plugins can highlight the word under current cursor, you can use this
 option to control their behavior.
 
-    Available values: `'grey background'`, `'bold'`, `'underline'`, `'italic'`
-    Default value: `'grey background'` when not in transparent mode, `'bold'`
+    Type:               |String|
+    Available values:   `'grey background'`, `'bold'`, `'underline'`, `'italic'`
+    Default value:      `'grey background'` when not in transparent mode, `'bold'`
     when in transparent mode.
 
-E.g.
->
-    let g:everforest_current_word = 'bold'
-<
 Currently, the following plugins are supported:
 
 - https://github.com/neoclide/coc-highlight
@@ -364,16 +387,28 @@ Currently, the following plugins are supported:
 - https://github.com/prabirshrestha/vim-lsp
 
 ------------------------------------------------------------------------------
+                                          *g:everforest_disable_terminal_colors*
+g:everforest_disable_terminal_colors~
+
+Setting this option to `1` will disable terminal colors provided by this color
+scheme so you can remain terminal colors the same when using |:terminal| in
+vim and outside of vim.
+
+    Type:               |Number|
+    Available values:   `0`, `1`
+    Default value:      `0`
+
+------------------------------------------------------------------------------
                                            *g:everforest_lightline_disable_bold*
 g:everforest_lightline_disable_bold~
 
 By default, bold is enabled in lightline color scheme. To disable bold in
 lightline color scheme, set this option to `1`.
 
-E.g.
->
-    let g:everforest_lightline_disable_bold = 1
-<
+    Type:               |Number|
+    Available values:   `0`, `1`
+    Default value:      `0`
+
 Note: this configuration option doesn't need to be placed before `colorscheme everforest`
 
 ------------------------------------------------------------------------------
@@ -382,20 +417,35 @@ g:everforest_better_performance~
 
 The loading time of this color scheme is very long because too many file types
 and plugins are optimized. This feature allows you to load part of the code on
-demand by placing them in the `after/ftplugin` directory.
+demand by placing them in the `after/syntax` directory.
 
 Enabling this option will reduce loading time by approximately 50%.
 
+    Type:               |Number|
+    Available values:   `0`, `1`
+    Default value:      `0`
+
+------------------------------------------------------------------------------
+                                                  *g:everforest_colors_override*
+g:everforest_colors_override~
+
+Override color palette. The available keys can be found in
+`/path/to/everforest/autoload/everforest.vim`.
+
 E.g.
 >
-    let g:everforest_better_performance = 1
+    let g:everforest_colors_override = {'bg0': ['#202020', '234'], 'bg2': ['#282828', '235']}
+    colorscheme everforest
 <
+    Type:               |Dictionary|
+    Default value:      `{}`
+
 ==============================================================================
 FAQ                                                             *everforest-faq*
 
 ------------------------------------------------------------------------------
 
-It doesn't work as expected.~
+The colors don't match those in the screenshots.~
 
 1. This color scheme is mainly designed for true colors, `set termguicolors`
 is required. Check output of `vim --version`, maybe your vim doesn't support
@@ -408,10 +458,11 @@ using [this script](https://unix.stackexchange.com/questions/404414/print-true-c
 tmux, as tmux cannot display true colors properly:
 [#1246 How to use true colors in vim under tmux?](https://github.com/tmux/tmux/issues/1246)
 
-4. There are many highlight group links in syntax files while a color scheme
-may change them, enabling one color scheme based on another color scheme
-enabled is very likely to cause colors to break. If any color is broken, you
-can enable the color scheme in your vimrc instead of after vim startup.
+------------------------------------------------------------------------------
+
+The configuration options don't work.~
+
+You should place them before `colorscheme everforest` .
 
 ------------------------------------------------------------------------------
 
@@ -424,11 +475,11 @@ Check [sainnhe/gruvbox-material#60](https://github.com/sainnhe/gruvbox-material/
 
 How to enable cursive italic keywords?~
 
-1. Install a font that supports cursive italics, for example [icursive-nerd-font](https://github.com/sainnhe/icursive-nerd-font).
+1. Install a font that supports cursive italics, for example https://aka.sainnhe.dev/fonts
 
 2. Enable italic keywords in this color scheme: `let g:everforest_enable_italic = 1`
 
-3. Disable italic comment(optional): `let g:everforest_disable_italic_comment = 1`
+3. (Optional) Disable italic comment: `let g:everforest_disable_italic_comment = 1`
 
 ------------------------------------------------------------------------------
 
@@ -436,6 +487,12 @@ The comment color looks weird.~
 
 Some terminal emulators don't support italics, which may cause the comment
 color looks weird. See https://github.com/sainnhe/gruvbox-material/issues/5#issuecomment-729586348
+
+A temporary solution is to disable italic comments via
+|g:everforest_disable_italic_comment|.
+
+If you are using tmux, you may also need to override default true colors of
+tmux: https://github.com/tmux/tmux/issues/1246
 
 ------------------------------------------------------------------------------
 
@@ -448,7 +505,9 @@ How to use custom colors?~
       highlight! link groupC groupD
     
       " Initialize the color palette.
-      let l:palette = everforest#get_palette()
+      " The first parameter is a valid value for `g:everforest_background`,
+      " and the second parameter is a valid value for `g:everforest_colors_override`.
+      let l:palette = everforest#get_palette('medium', {})
       " Define a highlight group.
       " The first parameter is the name of a highlight group,
       " the second parameter is the foreground color,
@@ -472,13 +531,13 @@ Note: Make sure to define the `augroup` before declare the `colorscheme`.
 
 What's your status line configuration?~
 
-See this [article](https://www.sainnhe.dev/post/status-line-config/).
+See this post: https://aka.sainnhe.dev/statusline
 
 ------------------------------------------------------------------------------
 
 What's the font used here?~
 
-[Recursive Code iCursive Cg](https://github.com/sainnhe/icursive-nerd-font).
+See this post: https://aka.sainnhe.dev/fonts
 
 ==============================================================================
 vim:tw=78:nosta:noet:ts=8:sts=0:ft=help:et:sw=4:fen:fdm=marker:fmr={{{,}}}:

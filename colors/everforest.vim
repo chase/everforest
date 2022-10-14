@@ -1,16 +1,16 @@
 " -----------------------------------------------------------------------------
 " Name:         Everforest
 " Description:  Comfortable & Pleasant Color Scheme for Vim
-" Author:       sainnhe <sainnhe@gmail.com>
+" Author:       sainnhe <i@sainnhe.dev>
 " Website:      https://github.com/sainnhe/everforest
 " License:      MIT
 " -----------------------------------------------------------------------------
 
 " Initialization: {{{
 let s:configuration = everforest#get_configuration()
-let s:palette = everforest#get_palette(s:configuration.background)
+let s:palette = everforest#get_palette(s:configuration.background, s:configuration.colors_override)
 let s:path = expand('<sfile>:p') " the path of this script
-let s:last_modified = 'Fri Jan 17 13:54:44 AM UTC 2021'
+let s:last_modified = 'Fri Sep  9 13:00:23 UTC 2022'
 let g:everforest_loaded_file_types = []
 
 if !(exists('g:colors_name') && g:colors_name ==# 'everforest' && s:configuration.better_performance)
@@ -28,7 +28,7 @@ endif
 " }}}
 " Common Highlight Groups: {{{
 " UI: {{{
-if s:configuration.transparent_background
+if s:configuration.transparent_background >= 1
   call everforest#highlight('Normal', s:palette.fg, s:palette.none)
   call everforest#highlight('Terminal', s:palette.fg, s:palette.none)
   if s:configuration.show_eob
@@ -54,7 +54,7 @@ else
   endif
   call everforest#highlight('Folded', s:palette.grey1, s:palette.bg1)
   call everforest#highlight('ToolbarLine', s:palette.fg, s:palette.bg2)
-  if s:configuration.sign_column_background ==# 'default'
+  if s:configuration.sign_column_background ==# 'grey'
     call everforest#highlight('SignColumn', s:palette.fg, s:palette.bg1)
     call everforest#highlight('FoldColumn', s:palette.grey2, s:palette.bg1)
   else
@@ -94,7 +94,7 @@ if s:configuration.ui_contrast ==# 'low'
   call everforest#highlight('LineNr', s:palette.bg5, s:palette.none)
   if &diff
     call everforest#highlight('CursorLineNr', s:palette.grey1, s:palette.none, 'underline')
-  elseif (&relativenumber == 1 && &cursorline == 0) || s:configuration.sign_column_background !=# 'default'
+  elseif (&relativenumber == 1 && &cursorline == 0) || s:configuration.sign_column_background ==# 'none'
     call everforest#highlight('CursorLineNr', s:palette.grey1, s:palette.none)
   else
     call everforest#highlight('CursorLineNr', s:palette.grey1, s:palette.bg1)
@@ -103,7 +103,7 @@ else
   call everforest#highlight('LineNr', s:palette.grey0, s:palette.none)
   if &diff
     call everforest#highlight('CursorLineNr', s:palette.grey2, s:palette.none, 'underline')
-  elseif (&relativenumber == 1 && &cursorline == 0) || s:configuration.sign_column_background !=# 'default'
+  elseif (&relativenumber == 1 && &cursorline == 0) || s:configuration.sign_column_background ==# 'none'
     call everforest#highlight('CursorLineNr', s:palette.grey2, s:palette.none)
   else
     call everforest#highlight('CursorLineNr', s:palette.grey2, s:palette.bg1)
@@ -151,6 +151,7 @@ call everforest#highlight('debugBreakpoint', s:palette.bg0, s:palette.red)
 call everforest#highlight('ToolbarButton', s:palette.bg0, s:palette.green)
 if has('nvim')
   call everforest#highlight('Substitute', s:palette.bg0, s:palette.yellow)
+  highlight! link WinBarNC Grey
   highlight! link DiagnosticFloatingError ErrorFloat
   highlight! link DiagnosticFloatingWarn WarningFloat
   highlight! link DiagnosticFloatingInfo InfoFloat
@@ -170,30 +171,33 @@ if has('nvim')
   highlight! link DiagnosticSignError RedSign
   highlight! link DiagnosticSignWarn YellowSign
   highlight! link DiagnosticSignInfo BlueSign
-  highlight! link DiagnosticSignHint AquaSign
-  highlight! link LspDiagnosticsFloatingError ErrorFloat
-  highlight! link LspDiagnosticsFloatingWarning WarningFloat
-  highlight! link LspDiagnosticsFloatingInformation InfoFloat
-  highlight! link LspDiagnosticsFloatingHint HintFloat
-  highlight! link LspDiagnosticsDefaultError ErrorText
-  highlight! link LspDiagnosticsDefaultWarning WarningText
-  highlight! link LspDiagnosticsDefaultInformation InfoText
-  highlight! link LspDiagnosticsDefaultHint HintText
-  highlight! link LspDiagnosticsVirtualTextError VirtualTextError
-  highlight! link LspDiagnosticsVirtualTextWarning VirtualTextWarning
-  highlight! link LspDiagnosticsVirtualTextInformation VirtualTextInfo
-  highlight! link LspDiagnosticsVirtualTextHint VirtualTextHint
-  highlight! link LspDiagnosticsUnderlineError ErrorText
-  highlight! link LspDiagnosticsUnderlineWarning WarningText
-  highlight! link LspDiagnosticsUnderlineInformation InfoText
-  highlight! link LspDiagnosticsUnderlineHint HintText
-  highlight! link LspDiagnosticsSignError RedSign
-  highlight! link LspDiagnosticsSignWarning YellowSign
-  highlight! link LspDiagnosticsSignInformation BlueSign
-  highlight! link LspDiagnosticsSignHint AquaSign
+  highlight! link DiagnosticSignHint GreenSign
+  highlight! link LspDiagnosticsFloatingError DiagnosticFloatingError
+  highlight! link LspDiagnosticsFloatingWarning DiagnosticFloatingWarn
+  highlight! link LspDiagnosticsFloatingInformation DiagnosticFloatingInfo
+  highlight! link LspDiagnosticsFloatingHint DiagnosticFloatingHint
+  highlight! link LspDiagnosticsDefaultError DiagnosticError
+  highlight! link LspDiagnosticsDefaultWarning DiagnosticWarn
+  highlight! link LspDiagnosticsDefaultInformation DiagnosticInfo
+  highlight! link LspDiagnosticsDefaultHint DiagnosticHint
+  highlight! link LspDiagnosticsVirtualTextError DiagnosticVirtualTextError
+  highlight! link LspDiagnosticsVirtualTextWarning DiagnosticVirtualTextWarn
+  highlight! link LspDiagnosticsVirtualTextInformation DiagnosticVirtualTextInfo
+  highlight! link LspDiagnosticsVirtualTextHint DiagnosticVirtualTextHint
+  highlight! link LspDiagnosticsUnderlineError DiagnosticUnderlineError
+  highlight! link LspDiagnosticsUnderlineWarning DiagnosticUnderlineWarn
+  highlight! link LspDiagnosticsUnderlineInformation DiagnosticUnderlineInfo
+  highlight! link LspDiagnosticsUnderlineHint DiagnosticUnderlineHint
+  highlight! link LspDiagnosticsSignError DiagnosticSignError
+  highlight! link LspDiagnosticsSignWarning DiagnosticSignWarn
+  highlight! link LspDiagnosticsSignInformation DiagnosticSignInfo
+  highlight! link LspDiagnosticsSignHint DiagnosticSignHint
   highlight! link LspReferenceText CurrentWord
   highlight! link LspReferenceRead CurrentWord
   highlight! link LspReferenceWrite CurrentWord
+  highlight! link LspCodeLens VirtualTextInfo
+  highlight! link LspCodeLensSeparator VirtualTextHint
+  highlight! link LspSignatureActiveParameter Search
   highlight! link TermCursor Cursor
   highlight! link healthError Red
   highlight! link healthSuccess Green
@@ -283,7 +287,7 @@ else
   call everforest#highlight('BlueItalic', s:palette.blue, s:palette.none)
   call everforest#highlight('PurpleItalic', s:palette.purple, s:palette.none)
 endif
-if s:configuration.transparent_background || s:configuration.sign_column_background !=# 'default'
+if s:configuration.transparent_background || s:configuration.sign_column_background ==# 'none'
   call everforest#highlight('RedSign', s:palette.red, s:palette.none)
   call everforest#highlight('OrangeSign', s:palette.orange, s:palette.none)
   call everforest#highlight('YellowSign', s:palette.yellow, s:palette.none)
@@ -347,7 +351,7 @@ endif
 " }}}
 " }}}
 " Terminal: {{{
-if (has('termguicolors') && &termguicolors) || has('gui_running')
+if ((has('termguicolors') && &termguicolors) || has('gui_running')) && !s:configuration.disable_terminal_colors
   " Definition
   let s:terminal = {
         \ 'black':    s:palette.bg0,
@@ -357,7 +361,7 @@ if (has('termguicolors') && &termguicolors) || has('gui_running')
         \ 'cyan':     s:palette.aqua,
         \ 'blue':     s:palette.blue,
         \ 'purple':   s:palette.purple,
-        \ 'white':    s:palette.fg
+        \ 'white':    &background ==# 'dark' ? s:palette.fg : s:palette.bg3,
         \ }
   " Implementation: {{{
   if !has('nvim')
@@ -388,7 +392,7 @@ endif
 " Plugins: {{{
 " nvim-treesitter/nvim-treesitter {{{
 call everforest#highlight('TSStrong', s:palette.none, s:palette.none, 'bold')
-call everforest#highlight('TSEmphasis', s:palette.none, s:palette.none, 'bold')
+call everforest#highlight('TSEmphasis', s:palette.none, s:palette.none, 'italic')
 call everforest#highlight('TSUnderline', s:palette.none, s:palette.none, 'underline')
 call everforest#highlight('TSNote', s:palette.bg0, s:palette.blue, 'bold')
 call everforest#highlight('TSWarning', s:palette.bg0, s:palette.yellow, 'bold')
@@ -426,6 +430,7 @@ highlight! link TSPunctBracket Fg
 highlight! link TSPunctDelimiter Grey
 highlight! link TSPunctSpecial Blue
 highlight! link TSRepeat Red
+highlight! link TSStorageClass Orange
 highlight! link TSString Yellow
 highlight! link TSStringEscape Yellow
 highlight! link TSStringRegex Purple
@@ -441,6 +446,56 @@ highlight! link TSTypeBuiltin YellowItalic
 highlight! link TSURI markdownUrl
 " highlight! link TSVariable Fg
 highlight! link TSVariableBuiltin BlueItalic
+if has('nvim-0.8.0')
+  highlight! link @annotation TSAnnotation
+  highlight! link @attribute TSAttribute
+  highlight! link @boolean TSBoolean
+  highlight! link @character TSCharacter
+  highlight! link @comment TSComment
+  highlight! link @conditional TSConditional
+  highlight! link @constant TSConstant
+  highlight! link @constant.builtin TSConstBuiltin
+  highlight! link @constant.macro TSConstMacro
+  highlight! link @constructor TSConstructor
+  highlight! link @exception TSException
+  highlight! link @field TSField
+  highlight! link @float TSFloat
+  highlight! link @function TSFunction
+  highlight! link @function.builtin TSFuncBuiltin
+  highlight! link @function.macro TSFuncMacro
+  highlight! link @include TSInclude
+  highlight! link @keyword TSKeyword
+  highlight! link @keyword.function TSKeywordFunction
+  highlight! link @keyword.operator TSKeywordOperator
+  highlight! link @label TSLabel
+  highlight! link @method TSMethod
+  highlight! link @namespace TSNamespace
+  highlight! link @none TSNone
+  highlight! link @number TSNumber
+  highlight! link @operator TSOperator
+  highlight! link @parameter TSParameter
+  highlight! link @parameter.reference TSParameterReference
+  highlight! link @property TSProperty
+  highlight! link @punctuation.bracket TSPunctBracket
+  highlight! link @punctuation.delimiter TSPunctDelimiter
+  highlight! link @punctuation.special TSPunctSpecial
+  highlight! link @repeat TSRepeat
+  highlight! link @storageclass TSStorageClass
+  highlight! link @string TSString
+  highlight! link @string.escape TSStringEscape
+  highlight! link @string.regex TSStringRegex
+  highlight! link @symbol TSSymbol
+  highlight! link @tag TSTag
+  highlight! link @tag.delimiter TSTagDelimiter
+  highlight! link @text TSText
+  highlight! link @strike TSStrike
+  highlight! link @math TSMath
+  highlight! link @type TSType
+  highlight! link @type.builtin TSTypeBuiltin
+  highlight! link @uri TSURI
+  highlight! link @variable TSVariable
+  highlight! link @variable.builtin TSVariableBuiltin
+endif
 " }}}
 " prabirshrestha/vim-lsp {{{
 highlight! link LspErrorVirtual VirtualTextError
@@ -452,6 +507,28 @@ highlight! link LspWarningHighlight WarningText
 highlight! link LspInformationHighlight InfoText
 highlight! link LspHintHighlight HintText
 highlight! link lspReference CurrentWord
+highlight! link lspInlayHintsType LineNr
+highlight! link lspInlayHintsParameter LineNr
+highlight! link LspSemanticType TSType
+highlight! link LspSemanticClass TSType
+highlight! link LspSemanticEnum TSType
+highlight! link LspSemanticInterface TSType
+highlight! link LspSemanticStruct TSType
+highlight! link LspSemanticTypeParameter TSType
+highlight! link LspSemanticParameter TSParameter
+highlight! link LspSemanticVariable TSVariable
+highlight! link LspSemanticProperty TSProperty
+highlight! link LspSemanticEnumMember TSVariableBuiltin
+highlight! link LspSemanticEvents TSLabel
+highlight! link LspSemanticFunction TSFunction
+highlight! link LspSemanticMethod TSMethod
+highlight! link LspSemanticKeyword TSKeyword
+highlight! link LspSemanticModifier TSOperator
+highlight! link LspSemanticComment TSComment
+highlight! link LspSemanticString TSString
+highlight! link LspSemanticNumber TSNumber
+highlight! link LspSemanticRegexp TSStringRegex
+highlight! link LspSemanticOperator TSOperator
 " }}}
 " hrsh7th/nvim-cmp {{{
 call everforest#highlight('CmpItemAbbrMatch', s:palette.green, s:palette.none, 'bold')
@@ -495,6 +572,7 @@ let g:fzf_colors = {
       \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
       \ 'hl+':     ['fg', 'Aqua'],
       \ 'info':    ['fg', 'Aqua'],
+      \ 'border':  ['fg', 'Grey'],
       \ 'prompt':  ['fg', 'Orange'],
       \ 'pointer': ['fg', 'Blue'],
       \ 'marker':  ['fg', 'Yellow'],
@@ -524,6 +602,12 @@ highlight! link IndentBlanklineContextChar CursorLineNr
 highlight! link IndentBlanklineChar LineNr
 highlight! link IndentBlanklineSpaceChar LineNr
 highlight! link IndentBlanklineSpaceCharBlankline LineNr
+" }}}
+" RRethy/vim-illuminate {{{
+highlight! link illuminatedWord CurrentWord
+highlight! link IlluminatedWordText CurrentWord
+highlight! link IlluminatedWordRead CurrentWord
+highlight! link IlluminatedWordWrite CurrentWord
 " }}}
 " kshenoy/vim-signature {{{
 highlight! link SignatureMarkText BlueSign
@@ -568,6 +652,236 @@ call everforest#highlight('FocusedSymbol', s:palette.none, s:palette.bg_green, '
 " L3MON4D3/LuaSnip {{{
 call everforest#highlight('LuasnipInsertNodePassive', s:palette.fg, s:palette.bg_red)
 " }}}
+" voldikss/vim-floaterm {{{
+highlight! link FloatermBorder Grey
+" }}}
+" MattesGroeger/vim-bookmarks {{{
+highlight! link BookmarkSign BlueSign
+highlight! link BookmarkAnnotationSign GreenSign
+highlight! link BookmarkLine DiffChange
+highlight! link BookmarkAnnotationLine DiffAdd
+" }}}
+if has('nvim')
+" hrsh7th/nvim-cmp {{{
+call everforest#highlight('CmpItemAbbrMatch', s:palette.green, s:palette.none, 'bold')
+call everforest#highlight('CmpItemAbbrMatchFuzzy', s:palette.green, s:palette.none, 'bold')
+highlight! link CmpItemAbbr Fg
+highlight! link CmpItemAbbrDeprecated Grey
+highlight! link CmpItemMenu Fg
+highlight! link CmpItemKind Yellow
+highlight! link CmpItemKindText Fg
+highlight! link CmpItemKindMethod Green
+highlight! link CmpItemKindFunction Green
+highlight! link CmpItemKindConstructor Green
+highlight! link CmpItemKindField Green
+highlight! link CmpItemKindVariable Blue
+highlight! link CmpItemKindClass Yellow
+highlight! link CmpItemKindInterface Yellow
+highlight! link CmpItemKindModule Yellow
+highlight! link CmpItemKindProperty Blue
+highlight! link CmpItemKindUnit Purple
+highlight! link CmpItemKindValue Purple
+highlight! link CmpItemKindEnum Yellow
+highlight! link CmpItemKindKeyword Red
+highlight! link CmpItemKindSnippet Aqua
+highlight! link CmpItemKindColor Aqua
+highlight! link CmpItemKindFile Aqua
+highlight! link CmpItemKindReference Aqua
+highlight! link CmpItemKindFolder Aqua
+highlight! link CmpItemKindEnumMember Purple
+highlight! link CmpItemKindConstant Blue
+highlight! link CmpItemKindStruct Yellow
+highlight! link CmpItemKindEvent Orange
+highlight! link CmpItemKindOperator Orange
+highlight! link CmpItemKindTypeParameter Yellow
+" }}}
+" folke/trouble.nvim {{{
+highlight! link TroubleText Fg
+highlight! link TroubleSource Grey
+highlight! link TroubleCode Grey
+" }}}
+" nvim-telescope/telescope.nvim {{{
+call everforest#highlight('TelescopeMatching', s:palette.green, s:palette.none, 'bold')
+highlight! link TelescopeBorder Grey
+highlight! link TelescopePromptPrefix Orange
+highlight! link TelescopeSelection DiffAdd
+" }}}
+" lewis6991/gitsigns.nvim {{{
+highlight! link GitSignsAdd GreenSign
+highlight! link GitSignsChange BlueSign
+highlight! link GitSignsDelete RedSign
+highlight! link GitSignsAddNr Green
+highlight! link GitSignsChangeNr Blue
+highlight! link GitSignsDeleteNr Red
+highlight! link GitSignsAddLn DiffAdd
+highlight! link GitSignsChangeLn DiffChange
+highlight! link GitSignsDeleteLn DiffDelete
+highlight! link GitSignsCurrentLineBlame Grey
+" }}}
+" phaazon/hop.nvim {{{
+call everforest#highlight('HopNextKey', s:palette.orange, s:palette.none, 'bold')
+call everforest#highlight('HopNextKey1', s:palette.green, s:palette.none, 'bold')
+highlight! link HopNextKey2 Green
+highlight! link HopUnmatched Grey
+" }}}
+" lukas-reineke/indent-blankline.nvim {{{
+highlight! link IndentBlanklineContextChar Grey
+highlight! link IndentBlanklineChar LineNr
+highlight! link IndentBlanklineSpaceChar LineNr
+highlight! link IndentBlanklineSpaceCharBlankline LineNr
+" }}}
+" p00f/nvim-ts-rainbow {{{
+highlight! link rainbowcol1 Red
+highlight! link rainbowcol2 Orange
+highlight! link rainbowcol3 Yellow
+highlight! link rainbowcol4 Green
+highlight! link rainbowcol5 Aqua
+highlight! link rainbowcol6 Blue
+highlight! link rainbowcol7 Purple
+" }}}
+" romgrk/barbar.nvim {{{
+call everforest#highlight('BufferCurrent', s:palette.fg, s:palette.bg4)
+call everforest#highlight('BufferCurrentIndex', s:palette.fg, s:palette.bg4)
+call everforest#highlight('BufferCurrentMod', s:palette.blue, s:palette.bg4)
+call everforest#highlight('BufferCurrentSign', s:palette.statusline1, s:palette.bg4)
+call everforest#highlight('BufferCurrentTarget', s:palette.red, s:palette.bg4, 'bold')
+call everforest#highlight('BufferVisible', s:palette.fg, s:palette.bg2)
+call everforest#highlight('BufferVisibleIndex', s:palette.fg, s:palette.bg2)
+call everforest#highlight('BufferVisibleMod', s:palette.blue, s:palette.bg2)
+call everforest#highlight('BufferVisibleSign', s:palette.statusline1, s:palette.bg2)
+call everforest#highlight('BufferVisibleTarget', s:palette.yellow, s:palette.bg2, 'bold')
+call everforest#highlight('BufferInactive', s:palette.grey1, s:palette.bg2)
+call everforest#highlight('BufferInactiveIndex', s:palette.grey1, s:palette.bg2)
+call everforest#highlight('BufferInactiveMod', s:palette.grey1, s:palette.bg2)
+call everforest#highlight('BufferInactiveSign', s:palette.grey0, s:palette.bg2)
+call everforest#highlight('BufferInactiveTarget', s:palette.yellow, s:palette.bg2, 'bold')
+call everforest#highlight('BufferTabpages', s:palette.bg0, s:palette.statusline1, 'bold')
+call everforest#highlight('BufferTabpageFill', s:palette.bg0, s:palette.bg0)
+" }}}
+" rcarriga/nvim-notify {{{
+highlight! link NotifyERRORBorder Red
+highlight! link NotifyWARNBorder Yellow
+highlight! link NotifyINFOBorder Green
+highlight! link NotifyDEBUGBorder Grey
+highlight! link NotifyTRACEBorder Purple
+highlight! link NotifyERRORIcon Red
+highlight! link NotifyWARNIcon Yellow
+highlight! link NotifyINFOIcon Green
+highlight! link NotifyDEBUGIcon Grey
+highlight! link NotifyTRACEIcon Purple
+highlight! link NotifyERRORTitle Red
+highlight! link NotifyWARNTitle Yellow
+highlight! link NotifyINFOTitle Green
+highlight! link NotifyDEBUGTitle Grey
+highlight! link NotifyTRACETitle Purple
+" }}}
+" rcarriga/nvim-dap-ui {{{
+call everforest#highlight('DapUIModifiedValue', s:palette.blue, s:palette.none, 'bold')
+call everforest#highlight('DapUIBreakpointsCurrentLine', s:palette.blue, s:palette.none, 'bold')
+highlight! link DapUIScope Blue
+highlight! link DapUIType Purple
+highlight! link DapUIDecoration Blue
+highlight! link DapUIThread Green
+highlight! link DapUIStoppedThread Blue
+highlight! link DapUISource Purple
+highlight! link DapUILineNumber Blue
+highlight! link DapUIFloatBorder Blue
+highlight! link DapUIWatchesEmpty Red
+highlight! link DapUIWatchesValue Green
+highlight! link DapUIWatchesError Red
+highlight! link DapUIBreakpointsPath Blue
+highlight! link DapUIBreakpointsInfo Green
+" }}}
+" glepnir/lspsaga.nvim {{{
+call everforest#highlight('LspFloatWinBorder', s:palette.bg0, s:palette.bg0)
+call everforest#highlight('LspSagaDiagnosticHeader', s:palette.orange, s:palette.none, 'bold')
+call everforest#highlight('LspSagaCodeActionTitle', s:palette.purple, s:palette.none, 'bold')
+call everforest#highlight('DefinitionPreviewTitle', s:palette.blue, s:palette.none, 'bold')
+highlight! link LspSagaDiagnosticError Red
+highlight! link LspSagaDiagnosticWarn Yellow
+highlight! link LspSagaDiagnosticInfo Blue
+highlight! link LspSagaDiagnosticHint Green
+highlight! link LspSagaErrorTrunCateLine LspSagaDiagnosticError
+highlight! link LspSagaWarnTrunCateLine LspSagaDiagnosticWarn
+highlight! link LspSagaInfoTrunCateLine LspSagaDiagnosticInfo
+highlight! link LspSagaHintTrunCateLine LspSagaDiagnosticHint
+highlight! link LspSagaDiagnosticSource Orange
+highlight! link LspSagaDiagnosticBorder Orange
+highlight! link LspSagaRenameBorder Purple
+highlight! link LspSagaRenamePromptPrefix Blue
+highlight! link LspSagaCodeActionBorder Purple
+highlight! link LspSagaCodeActionTruncateLine Purple
+highlight! link LspSagaCodeActionContent Green
+highlight! link LspSagaHoverBorder Green
+highlight! link LspSagaDocTruncateLine Green
+highlight! link LspSagaSignatureHelpBorder Green
+highlight! link LspSagaShTruncateLine Green
+highlight! link LspSagaDefPreviewBorder Blue
+highlight! link DefinitionIcon Blue
+highlight! link LspLinesDiagBorder Yellow
+highlight! link LineDiagTuncateLine Yellow
+highlight! link LspSagaAutoPreview Green
+highlight! link LspSagaFinderSelection Fg
+highlight! link DiagnosticWarning DiagnosticWarn
+highlight! link DiagnosticInformation DiagnosticInfo
+highlight! link ReferencesCount Grey
+highlight! link DefinitionCount Grey
+highlight! link TargetFileName Grey
+" }}}
+" b0o/incline.nvim {{{
+call everforest#highlight('InclineNormalNC', s:palette.grey1, s:palette.bg2)
+" }}}
+" echasnovski/mini.nvim {{{
+call everforest#highlight('MiniIndentscopePrefix', s:palette.none, s:palette.none, 'nocombine')
+call everforest#highlight('MiniJump2dSpot', s:palette.orange, s:palette.none, 'bold,nocombine')
+call everforest#highlight('MiniStarterCurrent', s:palette.none, s:palette.none, 'nocombine')
+call everforest#highlight('MiniStatuslineDevinfo', s:palette.grey1, s:palette.bg1)
+call everforest#highlight('MiniStatuslineFileinfo', s:palette.grey1, s:palette.bg1)
+call everforest#highlight('MiniStatuslineModeCommand', s:palette.bg0, s:palette.aqua, 'bold')
+call everforest#highlight('MiniStatuslineModeInsert', s:palette.bg0, s:palette.statusline2, 'bold')
+call everforest#highlight('MiniStatuslineModeNormal', s:palette.bg0, s:palette.statusline1, 'bold')
+call everforest#highlight('MiniStatuslineModeOther', s:palette.bg0, s:palette.purple, 'bold')
+call everforest#highlight('MiniStatuslineModeReplace', s:palette.bg0, s:palette.orange, 'bold')
+call everforest#highlight('MiniStatuslineModeVisual', s:palette.bg0, s:palette.statusline3, 'bold')
+call everforest#highlight('MiniTablineCurrent', s:palette.fg, s:palette.bg4)
+call everforest#highlight('MiniTablineHidden', s:palette.grey1, s:palette.bg2)
+call everforest#highlight('MiniTablineModifiedCurrent', s:palette.blue, s:palette.bg4)
+call everforest#highlight('MiniTablineModifiedHidden', s:palette.grey1, s:palette.bg2)
+call everforest#highlight('MiniTablineModifiedVisible', s:palette.blue, s:palette.bg2)
+call everforest#highlight('MiniTablineTabpagesection', s:palette.bg0, s:palette.statusline1, 'bold')
+call everforest#highlight('MiniTablineVisible', s:palette.fg, s:palette.bg2)
+call everforest#highlight('MiniTestEmphasis', s:palette.none, s:palette.none, 'bold')
+call everforest#highlight('MiniTestFail', s:palette.red, s:palette.none, 'bold')
+call everforest#highlight('MiniTestPass', s:palette.green, s:palette.none, 'bold')
+call everforest#highlight('MiniTrailspace', s:palette.none, s:palette.red)
+highlight! link MiniStarterItemBullet Grey
+highlight! link MiniStarterItemPrefix Yellow
+highlight! link MiniStarterQuery Blue
+highlight! link MiniStatuslineFilename Grey
+highlight! link MiniStatuslineModeInactive Grey
+highlight! link MiniCompletionActiveParameter LspSignatureActiveParameter
+highlight! link MiniCursorword CurrentWord
+highlight! link MiniCursorwordCurrent CurrentWord
+highlight! link MiniIndentscopeSymbol Grey
+highlight! link MiniJump Search
+highlight! link MiniStarterFooter Orange
+highlight! link MiniStarterHeader Yellow
+highlight! link MiniStarterInactive Comment
+highlight! link MiniStarterItem Normal
+highlight! link MiniStarterSection Title
+highlight! link MiniSurround IncSearch
+highlight! link MiniTablineFill TabLineFill
+" }}}
+" ggandor/lightspeed.nvim {{{
+call everforest#highlight('LightspeedLabel', s:palette.red, s:palette.none, 'bold,underline')
+call everforest#highlight('LightspeedLabelDistant', s:palette.blue, s:palette.none, 'bold,underline')
+call everforest#highlight('LightspeedShortcut', s:palette.bg0, s:palette.red, 'bold')
+call everforest#highlight('LightspeedUnlabeledMatch', s:palette.fg, s:palette.none, 'bold')
+call everforest#highlight('LightspeedPendingOpArea', s:palette.bg0, s:palette.green)
+highlight! link LightspeedMaskedChar Purple
+highlight! link LightspeedGreyWash Grey
+" }}}
+endif
 " }}}
 " Extended File Types: {{{
 " Whitelist: {{{ File type optimizations that will always be loaded.
@@ -582,25 +896,43 @@ highlight! link diffLine Grey
 highlight! link diffIndexLine Purple
 " }}}
 " }}}
-" Generate the `after/ftplugin` directory based on the comment tags in this file.
-" For example, the content between `ft_begin: sh/zsh` and `ft_end` will be placed in `after/ftplugin/sh/everforest.vim` and `after/ftplugin/zsh/everforest.vim`.
-if everforest#ft_exists(s:path) " If the ftplugin exists.
+" Generate the `after/syntax` directory based on the comment tags in this file.
+" For example, the content between `syn_begin: sh/zsh` and `syn_end` will be placed in `after/syntax/sh/everforest.vim` and `after/syntax/zsh/everforest.vim`.
+if everforest#syn_exists(s:path) " If the syntax files exist.
   if s:configuration.better_performance
-    if !everforest#ft_newest(s:path, s:last_modified) " Regenerate if it's not up to date.
-      call everforest#ft_clean(s:path, 0)
-      call everforest#ft_gen(s:path, s:last_modified, 'update')
+    if !everforest#syn_newest(s:path, s:last_modified) " Regenerate if it's not up to date.
+      call everforest#syn_clean(s:path, 0)
+      call everforest#syn_gen(s:path, s:last_modified, 'update')
     endif
     finish
   else
-    call everforest#ft_clean(s:path, 1)
+    call everforest#syn_clean(s:path, 1)
   endif
 else
   if s:configuration.better_performance
-    call everforest#ft_gen(s:path, s:last_modified, 'generate')
+    call everforest#syn_gen(s:path, s:last_modified, 'generate')
     finish
   endif
 endif
-" ft_begin: tagbar {{{
+" syn_begin: packer {{{
+" https://github.com/wbthomason/packer.nvim
+highlight! link packerSuccess Aqua
+highlight! link packerFail Red
+highlight! link packerStatusSuccess Fg
+highlight! link packerStatusFail Fg
+highlight! link packerWorking Yellow
+highlight! link packerString Yellow
+highlight! link packerPackageNotLoaded Grey
+highlight! link packerRelDate Grey
+highlight! link packerPackageName Green
+highlight! link packerOutput Orange
+highlight! link packerHash Green
+highlight! link packerTimeTrivial Blue
+highlight! link packerTimeHigh Red
+highlight! link packerTimeMedium Yellow
+highlight! link packerTimeLow Green
+" syn_end }}}
+" syn_begin: tagbar {{{
 " https://github.com/majutsushi/tagbar
 highlight! link TagbarFoldIcon Green
 highlight! link TagbarSignature Green
@@ -609,8 +941,39 @@ highlight! link TagbarScope Orange
 highlight! link TagbarNestedKind Aqua
 highlight! link TagbarVisibilityPrivate Red
 highlight! link TagbarVisibilityPublic Blue
-" ft_end }}}
-" ft_begin: NvimTree {{{
+" syn_end }}}
+" syn_begin: aerial {{{
+" https://github.com/stevearc/aerial.nvim
+highlight! link AerialLine CursorLine
+highlight! link AerialGuide LineNr
+highlight! link AerialFileIcon Green
+highlight! link AerialModuleIcon Purple
+highlight! link AerialNamespaceIcon Purple
+highlight! link AerialPackageIcon Purple
+highlight! link AerialClassIcon Red
+highlight! link AerialMethodIcon Green
+highlight! link AerialPropertyIcon Blue
+highlight! link AerialFieldIcon Green
+highlight! link AerialConstructorIcon Green
+highlight! link AerialEnumIcon Yellow
+highlight! link AerialInterfaceIcon Yellow
+highlight! link AerialFunctionIcon Green
+highlight! link AerialVariableIcon Blue
+highlight! link AerialConstantIcon Blue
+highlight! link AerialStringIcon Aqua
+highlight! link AerialNumberIcon Aqua
+highlight! link AerialBooleanIcon Aqua
+highlight! link AerialArrayIcon Aqua
+highlight! link AerialObjectIcon Aqua
+highlight! link AerialKeyIcon Red
+highlight! link AerialNullIcon Aqua
+highlight! link AerialEnumMemberIcon Aqua
+highlight! link AerialStructIcon Yellow
+highlight! link AerialEventIcon Orange
+highlight! link AerialOperatorIcon Orange
+highlight! link AerialTypeParameterIcon Yellow
+" syn_end }}}
+" syn_begin: NvimTree {{{
 " https://github.com/kyazdani42/nvim-tree.lua
 highlight! link NvimTreeSymlink Fg
 highlight! link NvimTreeFolderName Normal
@@ -634,8 +997,36 @@ highlight! link NvimTreeLspDiagnosticsError RedSign
 highlight! link NvimTreeLspDiagnosticsWarning YellowSign
 highlight! link NvimTreeLspDiagnosticsInformation BlueSign
 highlight! link NvimTreeLspDiagnosticsHint GreenSign
-" ft_end }}}
-" ft_begin: netrw {{{
+" syn_end }}}
+" syn_begin: octo {{{
+" https://github.com/pwntester/octo.nvim
+call everforest#highlight('OctoViewer', s:palette.bg0, s:palette.blue)
+call everforest#highlight('OctoGreenFloat', s:palette.green, s:palette.bg2)
+call everforest#highlight('OctoRedFloat', s:palette.red, s:palette.bg2)
+call everforest#highlight('OctoPurpleFloat', s:palette.purple, s:palette.bg2)
+call everforest#highlight('OctoYellowFloat', s:palette.yellow, s:palette.bg2)
+call everforest#highlight('OctoBlueFloat', s:palette.blue, s:palette.bg2)
+call everforest#highlight('OctoGreyFloat', s:palette.grey1, s:palette.bg2)
+call everforest#highlight('OctoBubbleGreen', s:palette.bg0, s:palette.green)
+call everforest#highlight('OctoBubbleRed', s:palette.bg0, s:palette.red)
+call everforest#highlight('OctoBubblePurple', s:palette.bg0, s:palette.purple)
+call everforest#highlight('OctoBubbleYellow', s:palette.bg0, s:palette.yellow)
+call everforest#highlight('OctoBubbleBlue', s:palette.bg0, s:palette.blue)
+call everforest#highlight('OctoBubbleGrey', s:palette.bg0, s:palette.grey1)
+highlight! link OctoGreen Green
+highlight! link OctoRed Red
+highlight! link OctoPurple Purple
+highlight! link OctoYellow Yellow
+highlight! link OctoBlue Blue
+highlight! link OctoGrey Grey
+highlight! link OctoBubbleDelimiterGreen Green
+highlight! link OctoBubbleDelimiterRed Red
+highlight! link OctoBubbleDelimiterPurple Purple
+highlight! link OctoBubbleDelimiterYellow Yellow
+highlight! link OctoBubbleDelimiterBlue Blue
+highlight! link OctoBubbleDelimiterGrey Grey
+" syn_end }}}
+" syn_begin: netrw {{{
 " https://www.vim.org/scripts/script.php?script_id=1075
 highlight! link netrwDir Green
 highlight! link netrwClassify Green
@@ -647,21 +1038,21 @@ highlight! link netrwList Aqua
 highlight! link netrwHelpCmd Blue
 highlight! link netrwCmdSep Grey
 highlight! link netrwVersion Orange
-" ft_end }}}
-" ft_begin: startify/quickmenu {{{
+" syn_end }}}
+" syn_begin: startify/quickmenu {{{
 " https://github.com/mhinz/vim-startify
 " https://github.com/skywind3000/quickmenu.vim
 highlight! link StartifyBracket Grey
 highlight! link StartifyFile Fg
-highlight! link StartifyNumber Red
+highlight! link StartifyNumber Orange
 highlight! link StartifyPath Green
 highlight! link StartifySlash Green
-highlight! link StartifySection Blue
-highlight! link StartifyHeader Orange
+highlight! link StartifySection Yellow
+highlight! link StartifyHeader Aqua
 highlight! link StartifySpecial Grey
 highlight! link StartifyFooter Grey
-" ft_end }}}
-" ft_begin: markdown {{{
+" syn_end }}}
+" syn_begin: markdown {{{
 " builtin: {{{
 call everforest#highlight('markdownH1', s:palette.red, s:palette.none, 'bold')
 call everforest#highlight('markdownH2', s:palette.orange, s:palette.none, 'bold')
@@ -704,16 +1095,37 @@ highlight! link mkdRule Purple
 highlight! link mkdDelimiter Grey
 highlight! link mkdId Yellow
 " }}}
-" ft_end }}}
-" ft_begin: rst {{{
+" syn_end }}}
+" syn_begin: vimwiki {{{
+call everforest#highlight('VimwikiHeader1', s:palette.red, s:palette.none, 'bold')
+call everforest#highlight('VimwikiHeader2', s:palette.orange, s:palette.none, 'bold')
+call everforest#highlight('VimwikiHeader3', s:palette.yellow, s:palette.none, 'bold')
+call everforest#highlight('VimwikiHeader4', s:palette.green, s:palette.none, 'bold')
+call everforest#highlight('VimwikiHeader5', s:palette.blue, s:palette.none, 'bold')
+call everforest#highlight('VimwikiHeader6', s:palette.purple, s:palette.none, 'bold')
+call everforest#highlight('VimwikiLink', s:palette.blue, s:palette.none, 'underline')
+call everforest#highlight('VimwikiItalic', s:palette.none, s:palette.none, 'italic')
+call everforest#highlight('VimwikiBold', s:palette.none, s:palette.none, 'bold')
+call everforest#highlight('VimwikiUnderline', s:palette.none, s:palette.none, 'underline')
+highlight! link VimwikiList Red
+highlight! link VimwikiTag Aqua
+highlight! link VimwikiCode Green
+highlight! link VimwikiHR Yellow
+highlight! link VimwikiHeaderChar Grey
+highlight! link VimwikiMarkers Grey
+highlight! link VimwikiPre Green
+highlight! link VimwikiPreDelim Green
+highlight! link VimwikiNoExistsLink Red
+" syn_end }}}
+" syn_begin: rst {{{
 " builtin: https://github.com/marshallward/vim-restructuredtext {{{
 call everforest#highlight('rstStandaloneHyperlink', s:palette.purple, s:palette.none, 'underline')
 highlight! link rstSubstitutionReference Blue
 highlight! link rstInterpretedTextOrHyperlinkReference Aqua
 highlight! link rstTableLines Grey
 " }}}
-" ft_end }}}
-" ft_begin: tex {{{
+" syn_end }}}
+" syn_begin: tex {{{
 " builtin: http://www.drchip.org/astronaut/vim/index.html#SYNTAX_TEX {{{
 highlight! link texStatement Green
 highlight! link texOnlyMath Grey
@@ -742,8 +1154,8 @@ highlight! link texMathEnvArgName BlueItalic
 highlight! link texTitleArg BlueItalic
 highlight! link texAuthorArg BlueItalic
 " }}}
-" ft_end }}}
-" ft_begin: html/markdown/javascriptreact/typescriptreact {{{
+" syn_end }}}
+" syn_begin: html/markdown/javascriptreact/typescriptreact {{{
 " builtin: https://notabug.org/jorgesumle/vim-html-syntax {{{
 call everforest#highlight('htmlH1', s:palette.red, s:palette.none, 'bold')
 call everforest#highlight('htmlH2', s:palette.orange, s:palette.none, 'bold')
@@ -767,8 +1179,8 @@ highlight! link htmlArg Aqua
 highlight! link htmlScriptTag Purple
 highlight! link htmlSpecialTagName RedItalic
 " }}}
-" ft_end }}}
-" ft_begin: xml {{{
+" syn_end }}}
+" syn_begin: xml {{{
 " builtin: https://github.com/chrisbra/vim-xml-ftplugin {{{
 highlight! link xmlTag Green
 highlight! link xmlEndTag Blue
@@ -782,8 +1194,8 @@ highlight! link xmlDocTypeKeyword PurpleItalic
 highlight! link xmlCdataStart Grey
 highlight! link xmlCdataCdata Purple
 " }}}
-" ft_end }}}
-" ft_begin: css/scss/sass/less {{{
+" syn_end }}}
+" syn_begin: css/scss/sass/less {{{
 " builtin: https://github.com/JulesWang/css.vim {{{
 highlight! link cssAttrComma Fg
 highlight! link cssBraces Fg
@@ -812,8 +1224,8 @@ highlight! link cssValueFrequency Green
 highlight! link cssVendor Grey
 highlight! link cssNoise Grey
 " }}}
-" ft_end }}}
-" ft_begin: scss {{{
+" syn_end }}}
+" syn_begin: scss {{{
 " scss-syntax: https://github.com/cakebaker/scss-syntax.vim {{{
 highlight! link scssMixinName Yellow
 highlight! link scssSelectorChar Red
@@ -827,8 +1239,8 @@ highlight! link scssForKeyword PurpleItalic
 highlight! link scssAttribute Orange
 highlight! link scssFunctionName Yellow
 " }}}
-" ft_end }}}
-" ft_begin: sass {{{
+" syn_end }}}
+" syn_begin: sass {{{
 " builtin: {{{
 highlight! link sassProperty Aqua
 highlight! link sassAmpersand Orange
@@ -843,8 +1255,8 @@ highlight! link sassControl RedItalic
 highlight! link sassFor RedItalic
 highlight! link sassFunctionName Green
 " }}}
-" ft_end }}}
-" ft_begin: less {{{
+" syn_end }}}
+" syn_begin: less {{{
 " vim-less: https://github.com/groenewege/vim-less {{{
 highlight! link lessMixinChar Grey
 highlight! link lessClass RedItalic
@@ -852,61 +1264,58 @@ highlight! link lessVariable Blue
 highlight! link lessAmpersandChar Orange
 highlight! link lessFunction Yellow
 " }}}
-" ft_end }}}
-" ft_begin: javascript/javascriptreact {{{
+" syn_end }}}
+" syn_begin: javascript/javascriptreact {{{
 " builtin: http://www.fleiner.com/vim/syntax/javascript.vim {{{
 highlight! link javaScriptNull Aqua
+highlight! link javaScriptNumber Number
 highlight! link javaScriptIdentifier Orange
-highlight! link javaScriptParens Fg
-highlight! link javaScriptBraces Fg
 highlight! link javaScriptGlobal Purple
 highlight! link javaScriptMessage Yellow
-highlight! link javaScriptFunction RedItalic
+highlight! link javaScriptFunction Keyword
 highlight! link javaScriptOperator Orange
 highlight! link javaScriptMember Aqua
 " }}}
 " vim-javascript: https://github.com/pangloss/vim-javascript {{{
+highlight! link jsString Aqua
+highlight! link jsTemplateString jsString
 highlight! link jsThis Purple
 highlight! link jsUndefined Aqua
 highlight! link jsNull Aqua
 highlight! link jsNan Aqua
 highlight! link jsSuper Purple
 highlight! link jsPrototype Purple
-highlight! link jsFunction RedItalic
-highlight! link jsGlobalNodeObjects PurpleItalic
+highlight! link jsFunction Keyword
+highlight! link jsGlobalNodeObjects Include
 highlight! link jsGlobalObjects Yellow
 highlight! link jsArrowFunction Purple
 highlight! link jsArrowFuncArgs Blue
-highlight! link jsFuncArgs Blue
-highlight! link jsObjectProp Aqua
-highlight! link jsVariableDef Blue
-highlight! link jsObjectKey Aqua
-highlight! link jsParen Blue
-highlight! link jsParenIfElse Blue
-highlight! link jsParenRepeat Blue
-highlight! link jsParenSwitch Blue
-highlight! link jsParenCatch Blue
-highlight! link jsBracket Blue
+highlight! link jsFuncArgs Identifier
 highlight! link jsBlockLabel Aqua
-highlight! link jsFunctionKey Green
-highlight! link jsClassDefinition Yellow
+highlight! link jsClassDefinition Type
+highlight! link jsClassStringKey Aqua
 highlight! link jsDot Grey
+highlight! link jsObjectColon Grey
 highlight! link jsDestructuringBlock Blue
-highlight! link jsSpreadExpression Purple
-highlight! link jsSpreadOperator Green
 highlight! link jsModuleKeyword Yellow
-highlight! link jsObjectValue Blue
 highlight! link jsTemplateExpression Yellow
 highlight! link jsTemplateBraces Yellow
 highlight! link jsClassMethodType Orange
+" }}}
+" nvim-treesitter/nvim-treesitter {{{
+highlight! link javascriptTSInclude Purple
+highlight! link javascriptTSConstructor Yellow
+if has('nvim-0.8.0')
+  highlight! link @include.javascript javascriptTSInclude
+  highlight! link @constructor.javascript javascriptTSConstructor
+endif
 " }}}
 " yajs: https://github.com/othree/yajs.vim {{{
 highlight! link javascriptEndColons Fg
 highlight! link javascriptOpSymbol Orange
 highlight! link javascriptOpSymbols Orange
-highlight! link javascriptIdentifierName Blue
 highlight! link javascriptVariable Orange
-highlight! link javascriptObjectLabel Aqua
+highlight! link javascriptObjectLabel Fg
 highlight! link javascriptObjectLabelColon Grey
 highlight! link javascriptPropertyNameString Aqua
 highlight! link javascriptFuncArg Blue
@@ -1039,8 +1448,8 @@ highlight! link jsxClosePunct Blue
 highlight! link jsxEscapeJs Blue
 highlight! link jsxAttrib Aqua
 " }}}
-" ft_end }}}
-" ft_begin: typescript/typescriptreact {{{
+" syn_end }}}
+" syn_begin: typescript/typescriptreact {{{
 " vim-typescript: https://github.com/leafgarland/typescript-vim {{{
 highlight! link typescriptSource PurpleItalic
 highlight! link typescriptMessage Yellow
@@ -1194,8 +1603,8 @@ highlight! link typescriptDOMFormProp Aqua
 highlight! link typescriptBOMHistoryProp Aqua
 highlight! link typescriptMathStaticProp Aqua
 " }}}
-" ft_end }}}
-" ft_begin: dart {{{
+" syn_end }}}
+" syn_begin: dart {{{
 " dart-lang: https://github.com/dart-lang/dart-vim-plugin {{{
 highlight! link dartCoreClasses Aqua
 highlight! link dartTypeName Aqua
@@ -1205,8 +1614,8 @@ highlight! link dartClassDecl RedItalic
 highlight! link dartLibrary PurpleItalic
 highlight! link dartMetadata Blue
 " }}}
-" ft_end }}}
-" ft_begin: coffee {{{
+" syn_end }}}
+" syn_begin: coffee {{{
 " vim-coffee-script: https://github.com/kchmck/vim-coffee-script {{{
 highlight! link coffeeExtendedOp Orange
 highlight! link coffeeSpecialOp Fg
@@ -1223,8 +1632,8 @@ highlight! link coffeeSpecialIdent Purple
 highlight! link coffeeObject Purple
 highlight! link coffeeObjAssign Aqua
 " }}}
-" ft_end }}}
-" ft_begin: purescript {{{
+" syn_end }}}
+" syn_begin: purescript {{{
 " purescript-vim: https://github.com/purescript-contrib/purescript-vim {{{
 highlight! link purescriptModuleKeyword PurpleItalic
 highlight! link purescriptModule Aqua
@@ -1236,8 +1645,8 @@ highlight! link purescriptIdentifier Blue
 highlight! link purescriptFunction Yellow
 highlight! link purescriptType Aqua
 " }}}
-" ft_end }}}
-" ft_begin: c/cpp/objc/objcpp {{{
+" syn_end }}}
+" syn_begin: c/cpp/objc/objcpp {{{
 " vim-cpp-enhanced-highlight: https://github.com/octol/vim-cpp-enhanced-highlight {{{
 highlight! link cppSTLnamespace Purple
 highlight! link cppSTLtype Yellow
@@ -1254,7 +1663,7 @@ highlight! link cppSTLVariable Aqua
 highlight! link Member Fg
 highlight! link Variable Fg
 highlight! link Namespace TSNamespace
-highlight! link EnumConstant TSStructure
+highlight! link EnumConstant TSNumber
 highlight! link chromaticaException TSException
 highlight! link chromaticaCast TSLabel
 highlight! link OperatorOverload TSOperator
@@ -1265,12 +1674,12 @@ highlight! link AutoType TSType
 " vim-lsp-cxx-highlight https://github.com/jackguo380/vim-lsp-cxx-highlight {{{
 highlight! link LspCxxHlSkippedRegion Grey
 highlight! link LspCxxHlSkippedRegionBeginEnd TSKeyword
-highlight! link LspCxxHlGroupEnumConstant TSStructure
+highlight! link LspCxxHlGroupEnumConstant BlueItalic
 highlight! link LspCxxHlGroupNamespace TSNamespace
 highlight! link LspCxxHlGroupMemberVariable Fg
 " }}}
-" ft_end }}}
-" ft_begin: objc {{{
+" syn_end }}}
+" syn_begin: objc {{{
 " builtin: {{{
 highlight! link objcModuleImport PurpleItalic
 highlight! link objcException RedItalic
@@ -1280,8 +1689,8 @@ highlight! link objcDirective RedItalic
 highlight! link objcPropertyAttribute Orange
 highlight! link objcHiddenArgument Aqua
 " }}}
-" ft_end }}}
-" ft_begin: cs {{{
+" syn_end }}}
+" syn_begin: cs {{{
 " builtin: https://github.com/nickspoons/vim-cs {{{
 highlight! link csUnspecifiedStatement PurpleItalic
 highlight! link csStorage RedItalic
@@ -1292,8 +1701,8 @@ highlight! link csInterpolationDelimiter Yellow
 highlight! link csInterpolation Yellow
 highlight! link csEndColon Fg
 " }}}
-" ft_end }}}
-" ft_begin: python {{{
+" syn_end }}}
+" syn_begin: python {{{
 " builtin: {{{
 highlight! link pythonBuiltin Yellow
 highlight! link pythonExceptions Purple
@@ -1333,13 +1742,21 @@ highlight! link semshiSelected CurrentWord
 highlight! link semshiErrorSign RedSign
 highlight! link semshiErrorChar RedSign
 " }}}
-" ft_end }}}
-" ft_begin: lua {{{
+" syn_end }}}
+" syn_begin: lua {{{
 " builtin: {{{
 highlight! link luaFunc Green
 highlight! link luaFunction Aqua
 highlight! link luaTable Fg
 highlight! link luaIn RedItalic
+" }}}
+" nvim-treesitter/nvim-treesitter {{{
+highlight! link luaTSField Fg
+highlight! link luaTSConstructor TSPunctBracket
+if has('nvim-0.8.0')
+  highlight! link @field.lua luaTSField
+  highlight! link @constructor.lua luaTSConstructor
+endif
 " }}}
 " vim-lua: https://github.com/tbastos/vim-lua {{{
 highlight! link luaFuncCall Green
@@ -1354,8 +1771,8 @@ highlight! link luaFuncArgName Blue
 highlight! link luaEllipsis Orange
 highlight! link luaDocTag Green
 " }}}
-" ft_end }}}
-" ft_begin: moon {{{
+" syn_end }}}
+" syn_begin: moon {{{
 " moonscript-vim: https://github.com/leafo/moonscript-vim {{{
 highlight! link moonInterpDelim Yellow
 highlight! link moonInterp Blue
@@ -1365,8 +1782,8 @@ highlight! link moonSpecialVar Purple
 highlight! link moonObject Yellow
 highlight! link moonDotAccess Grey
 " }}}
-" ft_end }}}
-" ft_begin: java {{{
+" syn_end }}}
+" syn_begin: java {{{
 " builtin: {{{
 highlight! link javaClassDecl RedItalic
 highlight! link javaMethodDecl RedItalic
@@ -1381,8 +1798,8 @@ highlight! link javaParen3 Fg
 highlight! link javaParen4 Fg
 highlight! link javaParen5 Fg
 " }}}
-" ft_end }}}
-" ft_begin: kotlin {{{
+" syn_end }}}
+" syn_begin: kotlin {{{
 " kotlin-vim: https://github.com/udalov/kotlin-vim {{{
 highlight! link ktSimpleInterpolation Yellow
 highlight! link ktComplexInterpolation Yellow
@@ -1390,8 +1807,8 @@ highlight! link ktComplexInterpolationBrace Yellow
 highlight! link ktStructure RedItalic
 highlight! link ktKeyword Aqua
 " }}}
-" ft_end }}}
-" ft_begin: scala {{{
+" syn_end }}}
+" syn_begin: scala {{{
 " builtin: https://github.com/derekwyatt/vim-scala {{{
 highlight! link scalaNameDefinition Aqua
 highlight! link scalaInterpolationBoundary Yellow
@@ -1400,23 +1817,39 @@ highlight! link scalaTypeOperator Orange
 highlight! link scalaOperator Orange
 highlight! link scalaKeywordModifier Orange
 " }}}
-" ft_end }}}
-" ft_begin: go {{{
-" builtin: https://github.com/google/vim-ft-go {{{
-highlight! link goDirective PurpleItalic
-highlight! link goConstants Aqua
+" syn_end }}}
+" syn_begin: go {{{
+" builtin: https://github.com/fatih/vim-go {{{
+highlight! link goPackage Define
+highlight! link goImport Include
+highlight! link goVar OrangeItalic
+highlight! link goConst goVar
+highlight! link goType Yellow
+highlight! link goSignedInts goType
+highlight! link goUnsignedInts goType
+highlight! link goFloats goType
+highlight! link goComplexes goType
+highlight! link goVarDefs Aqua
 highlight! link goDeclType OrangeItalic
-" }}}
-" polyglot: {{{
-highlight! link goPackage PurpleItalic
-highlight! link goImport PurpleItalic
-highlight! link goVarArgs Blue
-highlight! link goBuiltins Green
+highlight! link goFunctionCall Function
 highlight! link goPredefinedIdentifiers Aqua
-highlight! link goVar Orange
+highlight! link goBuiltins Function
+highlight! link goVarArgs Grey
 " }}}
-" ft_end }}}
-" ft_begin: rust {{{
+" nvim-treesitter/nvim-treesitter {{{
+highlight! link goTSInclude Purple
+highlight! link goTSNamespace Fg
+highlight! link goTSProperty Identifier
+highlight! link goTSConstBuiltin AquaItalic
+if has('nvim-0.8.0')
+  highlight! link @include.go goTSInclude
+  highlight! link @namespace.go goTSNamespace
+  highlight! link @property.go goTSProperty
+  highlight! link @constant.builtin.go goTSConstBuiltin
+endif
+" }}}
+" syn_end }}}
+" syn_begin: rust {{{
 " builtin: https://github.com/rust-lang/rust.vim {{{
 highlight! link rustStructure Orange
 highlight! link rustIdentifier Purple
@@ -1431,8 +1864,12 @@ highlight! link rustAssert Aqua
 highlight! link rustPanic Aqua
 highlight! link rustPubScopeCrate PurpleItalic
 " }}}
-" ft_end }}}
-" ft_begin: swift {{{
+" coc-rust-analyzer: https://github.com/fannheyward/coc-rust-analyzer {{{
+highlight! link CocRustChainingHint Grey
+highlight! link CocRustTypeHint Grey
+" }}}
+" syn_end }}}
+" syn_begin: swift {{{
 " swift.vim: https://github.com/keith/swift.vim {{{
 highlight! link swiftInterpolatedWrapper Yellow
 highlight! link swiftInterpolatedString Blue
@@ -1440,8 +1877,8 @@ highlight! link swiftProperty Aqua
 highlight! link swiftTypeDeclaration Orange
 highlight! link swiftClosureArgument Purple
 " }}}
-" ft_end }}}
-" ft_begin: php {{{
+" syn_end }}}
+" syn_begin: php {{{
 " builtin: https://jasonwoof.com/gitweb/?p=vim-syntax.git;a=blob;f=php.vim;hb=HEAD {{{
 highlight! link phpVarSelector Blue
 highlight! link phpDefine OrangeItalic
@@ -1460,8 +1897,8 @@ highlight! link phpMethod Green
 highlight! link phpClass Orange
 highlight! link phpSuperglobals Purple
 " }}}
-" ft_end }}}
-" ft_begin: ruby {{{
+" syn_end }}}
+" syn_begin: ruby {{{
 " builtin: https://github.com/vim-ruby/vim-ruby {{{
 highlight! link rubyKeywordAsMethod Green
 highlight! link rubyInterpolation Yellow
@@ -1474,8 +1911,8 @@ highlight! link rubyAccess Orange
 highlight! link rubyAttribute Yellow
 highlight! link rubyMacro RedItalic
 " }}}
-" ft_end }}}
-" ft_begin: haskell {{{
+" syn_end }}}
+" syn_begin: haskell {{{
 " haskell-vim: https://github.com/neovimhaskell/haskell-vim {{{
 highlight! link haskellBrackets Blue
 highlight! link haskellIdentifier Yellow
@@ -1487,8 +1924,8 @@ highlight! link haskellWhere RedItalic
 highlight! link haskellDeriving PurpleItalic
 highlight! link haskellForeignKeywords PurpleItalic
 " }}}
-" ft_end }}}
-" ft_begin: perl/pod {{{
+" syn_end }}}
+" syn_begin: perl/pod {{{
 " builtin: https://github.com/vim-perl/vim-perl {{{
 highlight! link perlStatementPackage PurpleItalic
 highlight! link perlStatementInclude PurpleItalic
@@ -1501,8 +1938,8 @@ highlight! link perlMethod Green
 highlight! link podVerbatimLine Green
 highlight! link podCmdText Yellow
 " }}}
-" ft_end }}}
-" ft_begin: ocaml {{{
+" syn_end }}}
+" syn_begin: ocaml {{{
 " builtin: https://github.com/rgrinberg/vim-ocaml {{{
 highlight! link ocamlArrow Orange
 highlight! link ocamlEqual Orange
@@ -1523,8 +1960,8 @@ highlight! link ocamlSigEncl Orange
 highlight! link ocamlStructEncl Aqua
 highlight! link ocamlModParam1 Blue
 " }}}
-" ft_end }}}
-" ft_begin: erlang {{{
+" syn_end }}}
+" syn_begin: erlang {{{
 " builtin: https://github.com/vim-erlang/vim-erlang-runtime {{{
 highlight! link erlangAtom Aqua
 highlight! link erlangLocalFuncRef Green
@@ -1534,8 +1971,8 @@ highlight! link erlangGlobalFuncCall Green
 highlight! link erlangAttribute PurpleItalic
 highlight! link erlangPipe Orange
 " }}}
-" ft_end }}}
-" ft_begin: elixir {{{
+" syn_end }}}
+" syn_begin: elixir {{{
 " vim-elixir: https://github.com/elixir-editors/vim-elixir {{{
 highlight! link elixirStringDelimiter Green
 highlight! link elixirKeyword Orange
@@ -1562,15 +1999,15 @@ highlight! link elixirCallbackDefine RedItalic
 highlight! link elixirStructDefine RedItalic
 highlight! link elixirExUnitMacro RedItalic
 " }}}
-" ft_end }}}
-" ft_begin: lisp {{{
+" syn_end }}}
+" syn_begin: lisp {{{
 " builtin: http://www.drchip.org/astronaut/vim/index.html#SYNTAX_LISP {{{
 highlight! link lispAtomMark Green
 highlight! link lispKey Aqua
 highlight! link lispFunc OrangeItalic
 " }}}
-" ft_end }}}
-" ft_begin: clojure {{{
+" syn_end }}}
+" syn_begin: clojure {{{
 " builtin: https://github.com/guns/vim-clojure-static {{{
 highlight! link clojureMacro PurpleItalic
 highlight! link clojureFunc Aqua
@@ -1582,8 +2019,8 @@ highlight! link clojureVariable Blue
 highlight! link clojureMeta Yellow
 highlight! link clojureDeref Yellow
 " }}}
-" ft_end }}}
-" ft_begin: matlab {{{
+" syn_end }}}
+" syn_begin: matlab {{{
 " builtin: {{{
 highlight! link matlabSemicolon Fg
 highlight! link matlabFunction RedItalic
@@ -1596,8 +2033,8 @@ highlight! link matlabRelationalOperator Orange
 highlight! link matlabRelationalOperator Orange
 highlight! link matlabLogicalOperator Orange
 " }}}
-" ft_end }}}
-" ft_begin: octave {{{
+" syn_end }}}
+" syn_begin: octave {{{
 " vim-octave: https://github.com/McSinyx/vim-octave{{{
 highlight! link octaveDelimiter Fg
 highlight! link octaveSemicolon Grey
@@ -1605,8 +2042,8 @@ highlight! link octaveOperator Orange
 highlight! link octaveVariable YellowItalic
 highlight! link octaveVarKeyword YellowItalic
 " }}}
-" ft_end }}}
-" ft_begin: sh/zsh {{{
+" syn_end }}}
+" syn_begin: sh/zsh {{{
 " builtin: http://www.drchip.org/astronaut/vim/index.html#SYNTAX_SH {{{
 highlight! link shRange Fg
 highlight! link shTestOpr Orange
@@ -1624,8 +2061,8 @@ highlight! link shCommandSub Orange
 highlight! link shFunctionOne Green
 highlight! link shFunctionKey RedItalic
 " }}}
-" ft_end }}}
-" ft_begin: zsh {{{
+" syn_end }}}
+" syn_begin: zsh {{{
 " builtin: https://github.com/chrisbra/vim-zsh {{{
 highlight! link zshOptStart PurpleItalic
 highlight! link zshOption Blue
@@ -1635,23 +2072,23 @@ highlight! link zshDeref Blue
 highlight! link zshTypes Orange
 highlight! link zshVariableDef Blue
 " }}}
-" ft_end }}}
-" ft_begin: fish {{{
+" syn_end }}}
+" syn_begin: fish {{{
 " vim-fish: https://github.com/georgewitteman/vim-fish {{{
 highlight! link fishStatement Orange
 highlight! link fishLabel RedItalic
 highlight! link fishCommandSub Yellow
 " }}}
-" ft_end }}}
-" ft_begin: ps1 {{{
+" syn_end }}}
+" syn_begin: ps1 {{{
 " vim-ps1: https://github.com/PProvost/vim-ps1 {{{
 highlight! link ps1FunctionInvocation Aqua
 highlight! link ps1FunctionDeclaration Aqua
 highlight! link ps1InterpolationDelimiter Yellow
 highlight! link ps1BuiltIn Yellow
 " }}}
-" ft_end }}}
-" ft_begin: vim {{{
+" syn_end }}}
+" syn_begin: vim {{{
 call everforest#highlight('vimCommentTitle', s:palette.grey1, s:palette.none, 'bold')
 highlight! link vimLet Orange
 highlight! link vimFunction Green
@@ -1673,14 +2110,14 @@ highlight! link vimHiBang Orange
 highlight! link vimSet Yellow
 highlight! link vimSetSep Grey
 highlight! link vimContinue Grey
-" ft_end }}}
-" ft_begin: make {{{
+" syn_end }}}
+" syn_begin: make {{{
 highlight! link makeIdent Aqua
 highlight! link makeSpecTarget Yellow
 highlight! link makeTarget Blue
 highlight! link makeCommands Orange
-" ft_end }}}
-" ft_begin: cmake {{{
+" syn_end }}}
+" syn_begin: cmake {{{
 highlight! link cmakeCommand Orange
 highlight! link cmakeKWconfigure_package_config_file Yellow
 highlight! link cmakeKWwrite_basic_package_version_file Yellow
@@ -1785,24 +2222,67 @@ highlight! link cmakeKWuse_mangled_mesa Aqua
 highlight! link cmakeKWvariable_requires Aqua
 highlight! link cmakeKWvariable_watch Aqua
 highlight! link cmakeKWwrite_file Aqua
-" ft_end }}}
-" ft_begin: json {{{
-highlight! link jsonKeyword Orange
+" syn_end }}}
+" syn_begin: json {{{
+" builtin {{{
+highlight! link jsonKeyword Green
+highlight! link jsonString Fg
 highlight! link jsonQuote Grey
-highlight! link jsonBraces Fg
-" ft_end }}}
-" ft_begin: yaml {{{
-highlight! link yamlKey Orange
-highlight! link yamlConstant Purple
-" ft_end }}}
-" ft_begin: toml {{{
-call everforest#highlight('tomlTable', s:palette.purple, s:palette.none, 'bold')
-highlight! link tomlKey Orange
+" }}}
+" nvim-treesitter/nvim-treesitter {{{
+highlight! link jsonTSLabel jsonKeyword
+highlight! link jsonTSString jsonString
+highlight! link jsonTSStringEscape SpecialChar
+if has('nvim-0.8.0')
+  highlight! link @label.json jsonTSLabel
+  highlight! link @string.json jsonTSString
+  highlight! link @string.escape jsonTSStringEscape
+endif
+" }}}
+" syn_end }}}
+" syn_begin: yaml {{{
+" builtin {{{
+highlight! link yamlBlockMappingKey Green
+highlight! link yamlString Fg
+highlight! link yamlConstant OrangeItalic
+highlight! link yamlKeyValueDelimiter Grey
+" }}}
+" nvim-treesitter/nvim-treesitter {{{
+highlight! link yamlTSField yamlBlockMappingKey
+highlight! link yamlTSString yamlString
+highlight! link yamlTSStringEscape SpecialChar
+highlight! link yamlTSBoolean yamlConstant
+highlight! link yamlTSConstBuiltin yamlConstant
+if has('nvim-0.8.0')
+  highlight! link @field.yaml yamlTSField
+  highlight! link @string.yaml yamlTSString
+  highlight! link @string.escape.yaml yamlTSStringEscape
+  highlight! link @boolean.yaml yamlTSBoolean
+  highlight! link @constant.builtin.yaml yamlTSConstBuiltin
+endif
+highlight! link yamlKey yamlBlockMappingKey  " stephpy/vim-yaml
+" }}}
+" syn_end }}}
+" syn_begin: toml {{{
+" builtin: https://github.com/cespare/vim-toml {{{
+call everforest#highlight('tomlTable', s:palette.orange, s:palette.none, 'bold')
+highlight! link tomlKey Green
+highlight! link tomlString Fg
+highlight! link tomlDate Special
 highlight! link tomlBoolean Aqua
 highlight! link tomlTableArray tomlTable
-" ft_end }}}
-" ft_begin: gitcommit {{{
-highlight! link gitcommitSummary Red
+" }}}
+" nvim-treesitter/nvim-treesitter {{{
+highlight! link tomlTSProperty tomlKey
+highlight! link tomlTSString tomlString
+if has('nvim-0.8.0')
+  highlight! link @property.toml tomlTSProperty
+  highlight! link @string.toml tomlTSString
+endif
+" }}}
+" syn_end }}}
+" syn_begin: gitcommit {{{
+highlight! link gitcommitSummary Green
 highlight! link gitcommitUntracked Grey
 highlight! link gitcommitDiscarded Grey
 highlight! link gitcommitSelected Grey
@@ -1810,14 +2290,14 @@ highlight! link gitcommitUnmerged Grey
 highlight! link gitcommitOnBranch Grey
 highlight! link gitcommitArrow Grey
 highlight! link gitcommitFile Green
-" ft_end }}}
-" ft_begin: dosini {{{
+" syn_end }}}
+" syn_begin: dosini {{{
 call everforest#highlight('dosiniHeader', s:palette.red, s:palette.none, 'bold')
 highlight! link dosiniLabel Yellow
 highlight! link dosiniValue Green
 highlight! link dosiniNumber Green
-" ft_end }}}
-" ft_begin: help {{{
+" syn_end }}}
+" syn_begin: help {{{
 call everforest#highlight('helpNote', s:palette.purple, s:palette.none, 'bold')
 call everforest#highlight('helpHeadline', s:palette.red, s:palette.none, 'bold')
 call everforest#highlight('helpHeader', s:palette.orange, s:palette.none, 'bold')
@@ -1828,7 +2308,7 @@ highlight! link helpCommand Aqua
 highlight! link helpExample Green
 highlight! link helpSpecial Blue
 highlight! link helpSectionDelim Grey
-" ft_end }}}
+" syn_end }}}
 " }}}
 
 " vim: set sw=2 ts=2 sts=2 et tw=80 ft=vim fdm=marker fmr={{{,}}}:

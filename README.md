@@ -19,9 +19,9 @@ Everforest is a green based color scheme, it's designed to be warm and soft in o
 - Works well with [redshift](https://github.com/jonls/redshift) and [f.lux](https://justgetflux.com).
 - Customizable.
 - Rich support for common file types and plugins.
-- Semantic highlighting support.
 - Tree-sitter support.
-- [Italic support](https://github.com/sainnhe/icursive-nerd-font) 🎉
+- Semantic highlighting support.
+- [Italic support](https://aka.sainnhe.dev/fonts) 🎉
 
 ## Documentation
 
@@ -46,9 +46,9 @@ See this [wiki page](https://github.com/sainnhe/everforest/wiki).
 
 ## Maintainers
 
-| [![Sainnhe Park](https://avatars1.githubusercontent.com/u/37491630?s=70&u=14e72916dcf467f393c532536387ec72a23747ec&v=4)](https://github.com/sainnhe) | [![Jef LeCompte](https://avatars0.githubusercontent.com/u/12074633?s=70&u=425e7f9db7a80a6615fd0d89bd58afdf7bddfda1&v=4)](https://github.com/jef) |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [Sainnhe Park](https://github.com/sainnhe)                                                                                                           | [Jef LeCompte](https://github.com/jef)                                                                                                           |
+| [![Sainnhe Park](https://avatars1.githubusercontent.com/u/37491630?s=70&u=14e72916dcf467f393c532536387ec72a23747ec&v=4)](https://github.com/sainnhe) | [![Jef LeCompte](https://avatars0.githubusercontent.com/u/12074633?s=70&u=425e7f9db7a80a6615fd0d89bd58afdf7bddfda1&v=4)](https://github.com/jef) | [![Antoine Cotten](https://avatars.githubusercontent.com/u/3299086?v=4&s=70)](https://github.com/antoineco) |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| [Sainnhe Park](https://github.com/sainnhe)                                                                                                           | [Jef LeCompte](https://github.com/jef)                                                                                                           | [Antoine Cotten](https://github.com/antoineco)                                                              |
 
 ## License
 
