@@ -10,7 +10,7 @@
 let s:configuration = everforest#get_configuration()
 let s:palette = everforest#get_palette(s:configuration.background)
 let s:path = expand('<sfile>:p') " the path of this script
-let s:last_modified = 'Fri Nov  15 12:53:44 AM UTC 2021'
+let s:last_modified = 'Fri Jan 17 13:54:44 AM UTC 2021'
 let g:everforest_loaded_file_types = []
 
 if !(exists('g:colors_name') && g:colors_name ==# 'everforest' && s:configuration.better_performance)
@@ -401,7 +401,7 @@ highlight! link TSComment Comment
 highlight! link TSConditional Red
 highlight! link TSConstBuiltin BlueItalic
 highlight! link TSConstMacro BlueItalic
-highlight! link TSConstant Fg
+" highlight! link TSConstant Fg
 highlight! link TSConstructor Green
 highlight! link TSException Red
 highlight! link TSField Green
@@ -419,8 +419,8 @@ highlight! link TSNamespace YellowItalic
 highlight! link TSNone Fg
 highlight! link TSNumber Purple
 highlight! link TSOperator Orange
-highlight! link TSParameter Fg
-highlight! link TSParameterReference Fg
+" highlight! link TSParameter Fg
+" highlight! link TSParameterReference Fg
 highlight! link TSProperty Green
 highlight! link TSPunctBracket Fg
 highlight! link TSPunctDelimiter Grey
@@ -430,7 +430,7 @@ highlight! link TSString Yellow
 highlight! link TSStringEscape Yellow
 highlight! link TSStringRegex Purple
 highlight! link TSStructure BlueItalic
-highlight! link TSSymbol Fg
+" highlight! link TSSymbol Fg
 highlight! link TSTag Orange
 highlight! link TSTagDelimiter Green
 highlight! link TSText Green
@@ -439,7 +439,7 @@ highlight! link TSMath Blue
 highlight! link TSType Yellow
 highlight! link TSTypeBuiltin YellowItalic
 highlight! link TSURI markdownUrl
-highlight! link TSVariable Fg
+" highlight! link TSVariable Fg
 highlight! link TSVariableBuiltin BlueItalic
 " }}}
 " prabirshrestha/vim-lsp {{{
@@ -460,6 +460,31 @@ highlight! link CmpItemAbbr Fg
 highlight! link CmpItemAbbrDeprecated Fg
 highlight! link CmpItemMenu Fg
 highlight! link CmpItemKind Yellow
+highlight! link CmpItemKindText Fg
+highlight! link CmpItemKindMethod Green
+highlight! link CmpItemKindFunction Green
+highlight! link CmpItemKindConstructor Green
+highlight! link CmpItemKindField Green
+highlight! link CmpItemKindVariable Blue
+highlight! link CmpItemKindClass Yellow
+highlight! link CmpItemKindInterface Yellow
+highlight! link CmpItemKindModule Yellow
+highlight! link CmpItemKindProperty Blue
+highlight! link CmpItemKindUnit Purple
+highlight! link CmpItemKindValue Purple
+highlight! link CmpItemKindEnum Yellow
+highlight! link CmpItemKindKeyword Red
+highlight! link CmpItemKindSnippet Aqua
+highlight! link CmpItemKindColor Aqua
+highlight! link CmpItemKindFile Aqua
+highlight! link CmpItemKindReference Aqua
+highlight! link CmpItemKindFolder Aqua
+highlight! link CmpItemKindEnumMember Purple
+highlight! link CmpItemKindConstant Blue
+highlight! link CmpItemKindStruct Yellow
+highlight! link CmpItemKindEvent Orange
+highlight! link CmpItemKindOperator Orange
+highlight! link CmpItemKindTypeParameter Yellow
 " }}}
 " junegunn/fzf.vim {{{
 let g:fzf_colors = {
@@ -539,6 +564,9 @@ call everforest#highlight('BufferInactiveTarget', s:palette.red, s:palette.bg1, 
 " }}}
 " simrat93/symbols-outline.nvim {{{
 call everforest#highlight('FocusedSymbol', s:palette.none, s:palette.bg_green, 'bold')
+" }}}
+" L3MON4D3/LuaSnip {{{
+call everforest#highlight('LuasnipInsertNodePassive', s:palette.fg, s:palette.bg_red)
 " }}}
 " }}}
 " Extended File Types: {{{
@@ -1056,6 +1084,7 @@ highlight! link typescriptNodeGlobal PurpleItalic
 highlight! link typescriptExport PurpleItalic
 highlight! link typescriptDefaultParam Orange
 highlight! link typescriptImport PurpleItalic
+highlight! link TSInclude PurpleItalic
 highlight! link typescriptTypeParameter Yellow
 highlight! link typescriptReadonlyModifier Orange
 highlight! link typescriptAccessibilityModifier Orange
@@ -1222,8 +1251,8 @@ highlight! link cppSTLexception Purple
 highlight! link cppSTLVariable Aqua
 " }}}
 " chromatica: https://github.com/arakashic/chromatica.nvim {{{
-highlight! link Member TSVariable
-highlight! link Variable TSVariable
+highlight! link Member Fg
+highlight! link Variable Fg
 highlight! link Namespace TSNamespace
 highlight! link EnumConstant TSStructure
 highlight! link chromaticaException TSException
@@ -1238,7 +1267,7 @@ highlight! link LspCxxHlSkippedRegion Grey
 highlight! link LspCxxHlSkippedRegionBeginEnd TSKeyword
 highlight! link LspCxxHlGroupEnumConstant TSStructure
 highlight! link LspCxxHlGroupNamespace TSNamespace
-highlight! link LspCxxHlGroupMemberVariable TSVariable
+highlight! link LspCxxHlGroupMemberVariable Fg
 " }}}
 " ft_end }}}
 " ft_begin: objc {{{
@@ -1292,7 +1321,7 @@ highlight! link pythonDot Grey
 " semshi: https://github.com/numirias/semshi {{{
 call everforest#highlight('semshiUnresolved', s:palette.yellow, s:palette.none, 'undercurl')
 highlight! link semshiImported TSInclude
-highlight! link semshiParameter TSParameter
+highlight! link semshiParameter Fg
 highlight! link semshiParameterUnused Grey
 highlight! link semshiSelf TSVariableBuiltin
 highlight! link semshiGlobal TSType
