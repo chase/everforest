@@ -10,7 +10,7 @@
 let s:configuration = everforest#get_configuration()
 let s:palette = everforest#get_palette(s:configuration.background, s:configuration.colors_override)
 let s:path = expand('<sfile>:p') " the path of this script
-let s:last_modified = 'Fri Sep  9 13:00:23 UTC 2022'
+let s:last_modified = 'Fri Oct 20 14:02:32 UTC 2022'
 let g:everforest_loaded_file_types = []
 
 if !(exists('g:colors_name') && g:colors_name ==# 'everforest' && s:configuration.better_performance)
@@ -87,8 +87,8 @@ if &diff
   call everforest#highlight('CursorLine', s:palette.none, s:palette.none, 'underline')
   call everforest#highlight('CursorColumn', s:palette.none, s:palette.none, 'bold')
 else
-  call everforest#highlight('CursorLine', s:palette.none, s:palette.bg1)
-  call everforest#highlight('CursorColumn', s:palette.none, s:palette.bg1)
+  call everforest#highlight('CursorLine', s:palette.none, s:palette.none)
+  call everforest#highlight('CursorColumn', s:palette.none, s:palette.none)
 endif
 if s:configuration.ui_contrast ==# 'low'
   call everforest#highlight('LineNr', s:palette.bg5, s:palette.none)
@@ -97,7 +97,7 @@ if s:configuration.ui_contrast ==# 'low'
   elseif (&relativenumber == 1 && &cursorline == 0) || s:configuration.sign_column_background ==# 'none'
     call everforest#highlight('CursorLineNr', s:palette.grey1, s:palette.none)
   else
-    call everforest#highlight('CursorLineNr', s:palette.grey1, s:palette.bg1)
+    call everforest#highlight('CursorLineNr', s:palette.grey1, s:palette.none)
   endif
 else
   call everforest#highlight('LineNr', s:palette.grey0, s:palette.none)
@@ -408,7 +408,7 @@ highlight! link TSConstMacro BlueItalic
 " highlight! link TSConstant Fg
 highlight! link TSConstructor Green
 highlight! link TSException Red
-highlight! link TSField Green
+highlight! link TSField Fg
 highlight! link TSFloat Purple
 highlight! link TSFuncBuiltin Green
 highlight! link TSFuncMacro Green
@@ -419,7 +419,7 @@ highlight! link TSKeywordFunction Red
 highlight! link TSKeywordOperator Orange
 highlight! link TSLabel Orange
 highlight! link TSMethod Green
-highlight! link TSNamespace YellowItalic
+highlight! link TSNamespace Aqua
 highlight! link TSNone Fg
 highlight! link TSNumber Purple
 highlight! link TSOperator Orange
@@ -441,11 +441,11 @@ highlight! link TSTagDelimiter Green
 highlight! link TSText Green
 highlight! link TSStrike Grey
 highlight! link TSMath Blue
-highlight! link TSType Yellow
-highlight! link TSTypeBuiltin YellowItalic
+highlight! link TSType Blue
+highlight! link TSTypeBuiltin Blue
 highlight! link TSURI markdownUrl
-" highlight! link TSVariable Fg
-highlight! link TSVariableBuiltin BlueItalic
+highlight! link TSVariable Fg
+highlight! link TSVariableBuiltin Purple
 if has('nvim-0.8.0')
   highlight! link @annotation TSAnnotation
   highlight! link @attribute TSAttribute
@@ -470,6 +470,7 @@ if has('nvim-0.8.0')
   highlight! link @label TSLabel
   highlight! link @method TSMethod
   highlight! link @namespace TSNamespace
+  highlight! link @namespace.type TSNamespace
   highlight! link @none TSNone
   highlight! link @number TSNumber
   highlight! link @operator TSOperator
@@ -597,12 +598,6 @@ call everforest#highlight('MatchParenCur', s:palette.none, s:palette.none, 'bold
 call everforest#highlight('MatchWord', s:palette.none, s:palette.none, 'underline')
 call everforest#highlight('MatchWordCur', s:palette.none, s:palette.none, 'underline')
 " }}}
-" lukas-reineke/indent-blankline.nvim {{{
-highlight! link IndentBlanklineContextChar CursorLineNr
-highlight! link IndentBlanklineChar LineNr
-highlight! link IndentBlanklineSpaceChar LineNr
-highlight! link IndentBlanklineSpaceCharBlankline LineNr
-" }}}
 " RRethy/vim-illuminate {{{
 highlight! link illuminatedWord CurrentWord
 highlight! link IlluminatedWordText CurrentWord
@@ -637,7 +632,6 @@ highlight! link NotifyDEBUGTitle Grey
 highlight! link NotifyTRACETitle Purple
 " }}}
 " barbar.nvim {{{
-highlight! link BufferOffset VertSplit
 call everforest#highlight('BufferCurrentMod', s:palette.fg, s:palette.none, 'bold')
 call everforest#highlight('BufferVisibleMod', s:palette.grey1, s:palette.none, 'bold')
 call everforest#highlight('BufferInactiveMod', s:palette.grey1, s:palette.bg1, 'bold')
@@ -725,10 +719,10 @@ highlight! link HopNextKey2 Green
 highlight! link HopUnmatched Grey
 " }}}
 " lukas-reineke/indent-blankline.nvim {{{
-highlight! link IndentBlanklineContextChar Grey
-highlight! link IndentBlanklineChar LineNr
-highlight! link IndentBlanklineSpaceChar LineNr
-highlight! link IndentBlanklineSpaceCharBlankline LineNr
+highlight! link IndentBlanklineContextChar LineNr
+highlight! link IndentBlanklineChar EndOfBuffer
+highlight! link IndentBlanklineSpaceChar EndOfBuffer
+highlight! link IndentBlanklineSpaceCharBlankline EndOfBuffer
 " }}}
 " p00f/nvim-ts-rainbow {{{
 highlight! link rainbowcol1 Red
@@ -739,24 +733,25 @@ highlight! link rainbowcol5 Aqua
 highlight! link rainbowcol6 Blue
 highlight! link rainbowcol7 Purple
 " }}}
-" romgrk/barbar.nvim {{{
-call everforest#highlight('BufferCurrent', s:palette.fg, s:palette.bg4)
-call everforest#highlight('BufferCurrentIndex', s:palette.fg, s:palette.bg4)
-call everforest#highlight('BufferCurrentMod', s:palette.blue, s:palette.bg4)
-call everforest#highlight('BufferCurrentSign', s:palette.statusline1, s:palette.bg4)
-call everforest#highlight('BufferCurrentTarget', s:palette.red, s:palette.bg4, 'bold')
-call everforest#highlight('BufferVisible', s:palette.fg, s:palette.bg2)
-call everforest#highlight('BufferVisibleIndex', s:palette.fg, s:palette.bg2)
-call everforest#highlight('BufferVisibleMod', s:palette.blue, s:palette.bg2)
-call everforest#highlight('BufferVisibleSign', s:palette.statusline1, s:palette.bg2)
-call everforest#highlight('BufferVisibleTarget', s:palette.yellow, s:palette.bg2, 'bold')
-call everforest#highlight('BufferInactive', s:palette.grey1, s:palette.bg2)
-call everforest#highlight('BufferInactiveIndex', s:palette.grey1, s:palette.bg2)
-call everforest#highlight('BufferInactiveMod', s:palette.grey1, s:palette.bg2)
-call everforest#highlight('BufferInactiveSign', s:palette.grey0, s:palette.bg2)
-call everforest#highlight('BufferInactiveTarget', s:palette.yellow, s:palette.bg2, 'bold')
-call everforest#highlight('BufferTabpages', s:palette.bg0, s:palette.statusline1, 'bold')
-call everforest#highlight('BufferTabpageFill', s:palette.bg0, s:palette.bg0)
+" akinsho/bufferline.nvim {{{
+call everforest#highlight('BufferLineCurrent', s:palette.fg, s:palette.bg4)
+call everforest#highlight('BufferLineCurrentIndex', s:palette.fg, s:palette.bg4)
+call everforest#highlight('BufferLineCurrentMod', s:palette.blue, s:palette.bg4)
+call everforest#highlight('BufferLineCurrentSign', s:palette.statusline1, s:palette.bg4)
+call everforest#highlight('BufferLineCurrentTarget', s:palette.red, s:palette.bg4, 'bold')
+call everforest#highlight('BufferLineVisible', s:palette.fg, s:palette.bg2)
+call everforest#highlight('BufferLineVisibleIndex', s:palette.fg, s:palette.bg2)
+call everforest#highlight('BufferLineVisibleMod', s:palette.blue, s:palette.bg2)
+call everforest#highlight('BufferLineVisibleSign', s:palette.statusline1, s:palette.bg2)
+call everforest#highlight('BufferLineVisibleTarget', s:palette.yellow, s:palette.bg2, 'bold')
+call everforest#highlight('BufferLineInactive', s:palette.grey1, s:palette.bg2)
+call everforest#highlight('BufferLineInactiveIndex', s:palette.grey1, s:palette.bg2)
+call everforest#highlight('BufferLineInactiveMod', s:palette.grey1, s:palette.bg2)
+call everforest#highlight('BufferLineInactiveSign', s:palette.grey0, s:palette.bg2)
+call everforest#highlight('BufferLineInactiveTarget', s:palette.yellow, s:palette.bg2, 'bold')
+call everforest#highlight('BufferLineTabpages', s:palette.bg0, s:palette.statusline1, 'bold')
+call everforest#highlight('BufferLineBackground', s:palette.none, ['#242a2f', '235'])
+call everforest#highlight('BufferLineFill', s:palette.none, ['#242a2f', '235'])
 " }}}
 " rcarriga/nvim-notify {{{
 highlight! link NotifyERRORBorder Red
@@ -880,6 +875,65 @@ call everforest#highlight('LightspeedUnlabeledMatch', s:palette.fg, s:palette.no
 call everforest#highlight('LightspeedPendingOpArea', s:palette.bg0, s:palette.green)
 highlight! link LightspeedMaskedChar Purple
 highlight! link LightspeedGreyWash Grey
+" }}}
+" SmiteshP/nvim-navic {{{
+" TODO: this is pretty lazy, properly make these generic
+highlight! link AerialLine CursorLine
+highlight! link AerialGuide LineNr
+highlight! link AerialFileIcon Green
+highlight! link AerialModuleIcon Purple
+highlight! link AerialNamespaceIcon Purple
+highlight! link AerialPackageIcon Purple
+highlight! link AerialClassIcon Red
+highlight! link AerialMethodIcon Green
+highlight! link AerialPropertyIcon Blue
+highlight! link AerialFieldIcon Green
+highlight! link AerialConstructorIcon Green
+highlight! link AerialEnumIcon Yellow
+highlight! link AerialInterfaceIcon Yellow
+highlight! link AerialFunctionIcon Green
+highlight! link AerialVariableIcon Blue
+highlight! link AerialConstantIcon Blue
+highlight! link AerialStringIcon Aqua
+highlight! link AerialNumberIcon Aqua
+highlight! link AerialBooleanIcon Aqua
+highlight! link AerialArrayIcon Aqua
+highlight! link AerialObjectIcon Aqua
+highlight! link AerialKeyIcon Red
+highlight! link AerialNullIcon Aqua
+highlight! link AerialEnumMemberIcon Aqua
+highlight! link AerialStructIcon Yellow
+highlight! link AerialEventIcon Orange
+highlight! link AerialOperatorIcon Orange
+highlight! link AerialTypeParameterIcon Yellow
+highlight! link NavicIconsFile AerialFileIcon
+highlight! link NavicIconsModule AerialModuleIcon
+highlight! link NavicIconsNamespace AerialNamespaceIcon
+highlight! link NavicIconsPackage AerialPackageIcon
+highlight! link NavicIconsClass AerialClassIcon
+highlight! link NavicIconsMethod AerialMethodIcon
+highlight! link NavicIconsProperty AerialPropertyIcon
+highlight! link NavicIconsField AerialFieldIcon
+highlight! link NavicIconsConstructor AerialConstructorIcon
+highlight! link NavicIconsEnum AerialEnumIcon
+highlight! link NavicIconsInterface AerialInterfaceIcon
+highlight! link NavicIconsFunction AerialFunctionIcon
+highlight! link NavicIconsVariable AerialVariableIcon
+highlight! link NavicIconsConstant AerialConstantIcon
+highlight! link NavicIconsString AerialStringIcon
+highlight! link NavicIconsNumber AerialNumberIcon
+highlight! link NavicIconsBoolean AerialBooleanIcon
+highlight! link NavicIconsArray AerialArrayIcon
+highlight! link NavicIconsObject AerialObjectIcon
+highlight! link NavicIconsKey LspSemanticProperty
+highlight! link NavicIconsNull AerialNullIcon
+highlight! link NavicIconsEnumMember AerialEnumMemberIcon
+highlight! link NavicIconsStruct AerialStructIcon
+highlight! link NavicIconsEvent AerialEventIcon
+highlight! link NavicIconsOperator AerialOperatorIcon
+highlight! link NavicIconsTypeParameter AerialTypeParameterIcon
+highlight! link NavicText Fg
+highlight! link NavicSeparator Grey
 " }}}
 endif
 " }}}
@@ -1647,6 +1701,10 @@ highlight! link purescriptType Aqua
 " }}}
 " syn_end }}}
 " syn_begin: c/cpp/objc/objcpp {{{
+call everforest#highlight('@cpp.include.path', s:palette.yellow, s:palette.none, 'underline', s:palette.yellow)
+highlight! link @cpp.auto Orange
+highlight! link @cpp.namespace.definition Aqua
+
 " vim-cpp-enhanced-highlight: https://github.com/octol/vim-cpp-enhanced-highlight {{{
 highlight! link cppSTLnamespace Purple
 highlight! link cppSTLtype Yellow
