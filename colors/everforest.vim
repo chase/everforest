@@ -10,7 +10,7 @@
 let s:configuration = everforest#get_configuration()
 let s:palette = everforest#get_palette(s:configuration.background, s:configuration.colors_override)
 let s:path = expand('<sfile>:p') " the path of this script
-let s:last_modified = 'Fri Oct 20 14:02:32 UTC 2022'
+let s:last_modified = 'Sunday Jan 01 14:02:32 UTC 2023'
 let g:everforest_loaded_file_types = []
 
 if !(exists('g:colors_name') && g:colors_name ==# 'everforest' && s:configuration.better_performance)
@@ -332,10 +332,10 @@ if s:configuration.diagnostic_virtual_text ==# 'grey'
   highlight! link VirtualTextInfo Grey
   highlight! link VirtualTextHint Grey
 else
-  call everforest#highlight('VirtualTextError', s:palette.red, s:palette.bg_red, 'undercurl', s:palette.red)
-  call everforest#highlight('VirtualTextWarning', s:palette.yellow, s:palette.bg_yellow, 'undercurl', s:palette.yellow)
-  call everforest#highlight('VirtualTextHint', s:palette.green, s:palette.bg_green, 'undercurl', s:palette.green)
-  call everforest#highlight('VirtualTextInfo', s:palette.blue, s:palette.bg_blue, 'undercurl', s:palette.blue)
+  call everforest#highlight('VirtualTextError', s:palette.red, s:palette.bg_red)
+  call everforest#highlight('VirtualTextWarning', s:palette.yellow, s:palette.bg_yellow)
+  call everforest#highlight('VirtualTextHint', s:palette.green, s:palette.bg_green)
+  call everforest#highlight('VirtualTextInfo', s:palette.blue, s:palette.bg_blue)
 endif
 call everforest#highlight('ErrorFloat', s:palette.red, s:palette.bg2)
 call everforest#highlight('WarningFloat', s:palette.yellow, s:palette.bg2)
