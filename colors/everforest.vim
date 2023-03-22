@@ -10,7 +10,7 @@
 let s:configuration = everforest#get_configuration()
 let s:palette = everforest#get_palette(s:configuration.background, s:configuration.colors_override)
 let s:path = expand('<sfile>:p') " the path of this script
-let s:last_modified = 'Sunday Jan 01 14:02:32 UTC 2023'
+let s:last_modified = 'Sunday Mar 22 14:03:32 UTC 2023'
 let g:everforest_loaded_file_types = []
 
 if !(exists('g:colors_name') && g:colors_name ==# 'everforest' && s:configuration.better_performance)
@@ -497,6 +497,28 @@ if has('nvim-0.8.0')
   highlight! link @variable TSVariable
   highlight! link @variable.builtin TSVariableBuiltin
 endif
+if has('nvim-0.9.0')
+  highlight! link @lsp.type.type TSType
+  highlight! link @lsp.type.class TSType
+  highlight! link @lsp.type.enum TSType
+  highlight! link @lsp.type.interface TSType
+  highlight! link @lsp.type.struct TSType
+  highlight! link @lsp.type.typeParameter TSType
+  highlight! link @lsp.type.parameter TSParameter
+  highlight! link @lsp.type.variable TSVariable
+  highlight! link @lsp.type.property TSProperty
+  highlight! link @lsp.type.enumMember TSVariableBuiltin
+  highlight! link @lsp.type.events TSLabel
+  highlight! link @lsp.type.function TSFunction
+  highlight! link @lsp.type.method TSMethod
+  highlight! link @lsp.type.keyword TSKeyword
+  highlight! link @lsp.type.modifier TSOperator
+  highlight! link @lsp.type.comment TSComment
+  highlight! link @lsp.type.string TSString
+  highlight! link @lsp.type.number TSNumber
+  highlight! link @lsp.type.regexp TSStringRegex
+  highlight! link @lsp.type.operator TSOperator
+end
 " }}}
 " prabirshrestha/vim-lsp {{{
 highlight! link LspErrorVirtual VirtualTextError
