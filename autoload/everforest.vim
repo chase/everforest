@@ -8,23 +8,23 @@
 
 function! everforest#get_configuration() "{{{
   return {
-        \ 'background': get(g:, 'everforest_background', 'medium'),
+        \ 'background': get(g:, 'everforest_background', 'hard'),
         \ 'transparent_background': get(g:, 'everforest_transparent_background', 0),
-        \ 'disable_italic_comment': get(g:, 'everforest_disable_italic_comment', 0),
+        \ 'disable_italic_comment': get(g:, 'everforest_disable_italic_comment', 1),
         \ 'enable_italic': get(g:, 'everforest_enable_italic', 0),
         \ 'cursor': get(g:, 'everforest_cursor', 'auto'),
         \ 'menu_selection_background': get(g:, 'everforest_menu_selection_background', 'white'),
-        \ 'sign_column_background': get(g:, 'everforest_sign_column_background', 'none'),
+        \ 'sign_column_background': get(g:, 'everforest_sign_column_background', 'grey'),
         \ 'spell_foreground': get(g:, 'everforest_spell_foreground', 'none'),
-        \ 'ui_contrast': get(g:, 'everforest_ui_contrast', 'low'),
-        \ 'show_eob': get(g:, 'everforest_show_eob', 1),
+        \ 'ui_contrast': get(g:, 'everforest_ui_contrast', 'medium'),
+        \ 'show_eob': get(g:, 'everforest_show_eob', 0),
         \ 'current_word': get(g:, 'everforest_current_word', get(g:, 'everforest_transparent_background', 0) == 0 ? 'grey background' : 'bold'),
         \ 'lightline_disable_bold': get(g:, 'everforest_lightline_disable_bold', 0),
         \ 'diagnostic_text_highlight': get(g:, 'everforest_diagnostic_text_highlight', 0),
         \ 'diagnostic_line_highlight': get(g:, 'everforest_diagnostic_line_highlight', 0),
-        \ 'diagnostic_virtual_text': get(g:, 'everforest_diagnostic_virtual_text', 'grey'),
+        \ 'diagnostic_virtual_text': get(g:, 'everforest_diagnostic_virtual_text', 'colored'),
         \ 'disable_terminal_colors': get(g:, 'everforest_disable_terminal_colors', 0),
-        \ 'better_performance': get(g:, 'everforest_better_performance', 0),
+        \ 'better_performance': get(g:, 'everforest_better_performance', 1),
         \ 'colors_override': get(g:, 'everforest_colors_override', {}),
         \ }
 endfunction "}}}
